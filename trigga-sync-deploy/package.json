@@ -1,0 +1,23 @@
+{
+  "name": "trigga-okocrm-sync",
+  "version": "1.0.0",
+  "description": "Bi-directional automated synchronization daemon between Trigga and OkoCRM",
+  "main": "trigga_okocrm_sync.js",
+  "scripts": {
+    "start": "node trigga_okocrm_sync.js --daemon",
+    "daemon": "node trigga_okocrm_sync.js --daemon",
+    "once": "node trigga_okocrm_sync.js",
+    "dry-run": "node trigga_okocrm_sync.js --dry-run"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "trigga",
+    "okocrm",
+    "outreach",
+    "sync"
+  ],
+  "author": "Call-Talk",
+  "license": "ISC"
+}

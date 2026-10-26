@@ -1,0 +1,529 @@
+{
+  "nextManagerIndex": 0,
+  "processedLeads": {
+    "8233219": {
+      "skippedHistorical": true,
+      "email": "elenastorozheva@gmail.com",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8233266": {
+      "skippedHistorical": true,
+      "email": "contact@newsite.by",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8595502": {
+      "skippedHistorical": true,
+      "email": "logist@kf33.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8595690": {
+      "skippedHistorical": true,
+      "email": "drozdovskaya@mystery.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8595898": {
+      "skippedHistorical": true,
+      "email": "rv@syring.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8596333": {
+      "okoLeadId": 2919114,
+      "email": "y.abakumova@primo-rpa.ru",
+      "companyId": 715230,
+      "responsibleId": 28419,
+      "triggaStatus": "interested",
+      "createdAt": "2026-10-19T01:08:54.302Z"
+    },
+    "8596393": {
+      "skippedHistorical": true,
+      "email": "tretyak@bergamotik.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8597796": {
+      "skippedHistorical": true,
+      "email": "info@thehrd.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8598069": {
+      "skippedHistorical": true,
+      "email": "info@kimberia.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8598194": {
+      "skippedHistorical": true,
+      "email": "info@isbplus.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8598444": {
+      "skippedHistorical": true,
+      "email": "info@3d-element.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8598880": {
+      "skippedHistorical": true,
+      "email": "info@sofico.pro",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8598882": {
+      "skippedHistorical": true,
+      "email": "enurzova@programs93.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8598994": {
+      "skippedHistorical": true,
+      "email": "vm@aredo.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8598995": {
+      "skippedHistorical": true,
+      "email": "hello@vincipr.com",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8599033": {
+      "skippedHistorical": true,
+      "email": "info@stam.su",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8599075": {
+      "skippedHistorical": true,
+      "email": "info@oylogistics.cn",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8599295": {
+      "skippedHistorical": true,
+      "email": "lena@otchetnik.com",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8599341": {
+      "skippedHistorical": true,
+      "email": "hello@atlas.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8722455": {
+      "skippedHistorical": true,
+      "email": "info@bvs-logistica.com",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8722464": {
+      "skippedHistorical": true,
+      "email": "mediatranslipetsk@yandex.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8722578": {
+      "skippedHistorical": true,
+      "email": "info@lanslogistic.com",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8722597": {
+      "okoLeadId": 2912571,
+      "email": "alexandr@atomlog.pro",
+      "responsibleId": 28418,
+      "triggaStatus": null,
+      "createdAt": "2026-10-17T03:15:07.612Z"
+    },
+    "8722625": {
+      "okoLeadId": 2912572,
+      "email": "avk-trans@mail.ru",
+      "responsibleId": 28419,
+      "triggaStatus": null,
+      "createdAt": "2026-10-17T03:15:10.381Z"
+    },
+    "8735502": {
+      "skippedHistorical": true,
+      "email": "maria@lodka-hr.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8773786": {
+      "skippedHistorical": true,
+      "email": "dima.bdp@yandex.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8850008": {
+      "skippedHistorical": true,
+      "email": "zakaz1@zavod-opora.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8850045": {
+      "skippedHistorical": true,
+      "email": "prom-energo-chel@mail.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8850046": {
+      "skippedHistorical": true,
+      "email": "prom-energo-chel@mail.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8850047": {
+      "skippedHistorical": true,
+      "email": "prom-energo-chel@mail.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8850048": {
+      "skippedHistorical": true,
+      "email": "prom-energo-chel@mail.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8850065": {
+      "skippedHistorical": true,
+      "email": "info@iskrasvarka.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8850111": {
+      "skippedHistorical": true,
+      "email": "o.surkova@gk-smk.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8850132": {
+      "skippedHistorical": true,
+      "email": "info@tulampk.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8850162": {
+      "okoLeadId": 2912578,
+      "email": "bogadzevich@zzir.ru",
+      "responsibleId": 28419,
+      "triggaStatus": null,
+      "createdAt": "2026-10-17T03:15:27.172Z"
+    },
+    "8850249": {
+      "skippedHistorical": true,
+      "email": "metalwork-spb.ru@yandex.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8850323": {
+      "skippedHistorical": true,
+      "email": "thermopanelregion@gmail.com",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8850337": {
+      "skippedHistorical": true,
+      "email": "info@raskon.su",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8850350": {
+      "skippedHistorical": true,
+      "email": "mr.lapudin@gmail.com",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8960762": {
+      "skippedHistorical": true,
+      "email": "a.gataullin@calltalk.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8960765": {
+      "skippedHistorical": true,
+      "email": "andrey.s@calltalk.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8960766": {
+      "skippedHistorical": true,
+      "email": "andreyskripka.work@gmail.com",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8960774": {
+      "skippedHistorical": true,
+      "email": "dmitry782mitin@yandex.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8960775": {
+      "skippedHistorical": true,
+      "email": "dm93vtb@gmail.com",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8960776": {
+      "skippedHistorical": true,
+      "email": "foasl.foals.00@gmail.com",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8965057": {
+      "skippedHistorical": true,
+      "email": "ouliana14@gmail.com",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8965059": {
+      "skippedHistorical": true,
+      "email": "ouliana14@icloud.com",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8977338": {
+      "skippedHistorical": true,
+      "email": "supply@szemi.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8988153": {
+      "skippedHistorical": true,
+      "email": "vkurilin@vlux.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8988184": {
+      "skippedHistorical": true,
+      "email": "a.abashkina@sdksys.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8988192": {
+      "skippedHistorical": true,
+      "email": "hd@winteam.pro",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8988248": {
+      "skippedHistorical": true,
+      "email": "serty_mobile@mail.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8988388": {
+      "skippedHistorical": true,
+      "email": "h33x@softwarecats.dev",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8988542": {
+      "skippedHistorical": true,
+      "email": "admin@1ps.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8988543": {
+      "skippedHistorical": true,
+      "email": "admin@1ps.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8988599": {
+      "skippedHistorical": true,
+      "email": "malahova_y@credo-dialogue.com",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8988616": {
+      "skippedHistorical": true,
+      "email": "rm@task1c.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8988641": {
+      "okoLeadId": 2912575,
+      "email": "info@vcdp.ru",
+      "responsibleId": 28418,
+      "triggaStatus": null,
+      "createdAt": "2026-10-17T03:15:16.525Z"
+    },
+    "8988646": {
+      "skippedHistorical": true,
+      "email": "kondrateva_si@bo48.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8988650": {
+      "okoLeadId": 2911710,
+      "email": "soberezovskiy@gmail.com",
+      "contactId": 3528398,
+      "isExisting": true
+    },
+    "8988654": {
+      "skippedHistorical": true,
+      "email": "voronov@samara.csoft.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8988673": {
+      "skippedHistorical": true,
+      "email": "help@ascts.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8988697": {
+      "skippedAutoReply": true,
+      "email": "babenko@sorus.su"
+    },
+    "8988728": {
+      "skippedFlatRejection": true,
+      "email": "stepan_1c@mail.ru",
+      "text": "Здравствуйте Игорь\n \nне актуально\n\nС уважением, Степан\nПрограммист 1С\nevrysoft.ru"
+    },
+    "8988771": {
+      "okoLeadId": 2912577,
+      "email": "v.vlasov@omt-consult.ru",
+      "responsibleId": 28418,
+      "triggaStatus": null,
+      "createdAt": "2026-10-17T03:15:20.195Z"
+    },
+    "8988783": {
+      "okoLeadId": 2912576,
+      "email": "tg@tehgrad.ru",
+      "responsibleId": 28419,
+      "triggaStatus": null,
+      "createdAt": "2026-10-17T03:15:18.369Z"
+    },
+    "8998304": {
+      "okoLeadId": 2911701,
+      "email": "service@yaromir22.ru",
+      "contactId": 3528388,
+      "isExisting": true
+    },
+    "8998378": {
+      "skippedHistorical": true,
+      "email": "dz@himavto.com",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8998392": {
+      "skippedHistorical": true,
+      "email": "bakhtin.vladimir@kolchuga-auto.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8998529": {
+      "skippedHistorical": true,
+      "email": "gubanov@avtoprom.com",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8998637": {
+      "skippedHistorical": true,
+      "email": "a.rodionov@car-tool.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8999352": {
+      "skippedHistorical": true,
+      "email": "info@standart-print.com",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8999354": {
+      "skippedHistorical": true,
+      "email": "iprint54@mail.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8999414": {
+      "skippedHistorical": true,
+      "email": "glavredng@logosvos.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8999451": {
+      "skippedHistorical": true,
+      "email": "fursov@1ssr.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8999458": {
+      "skippedHistorical": true,
+      "email": "vk.acros@ya.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8999491": {
+      "skippedHistorical": true,
+      "email": "info@levkolevko.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8999515": {
+      "skippedHistorical": true,
+      "email": "info@vinchera.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8999570": {
+      "skippedHistorical": true,
+      "email": "v-89009083050@yandex.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8999614": {
+      "skippedHistorical": true,
+      "email": "2491675@mail.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8999636": {
+      "skippedHistorical": true,
+      "email": "2v@2v.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8999641": {
+      "skippedHistorical": true,
+      "email": "lena@flex-print.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8999642": {
+      "skippedHistorical": true,
+      "email": "info@printair.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8999745": {
+      "skippedHistorical": true,
+      "email": "fp_azarin@mail.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8999754": {
+      "skippedHistorical": true,
+      "email": "siteorder@fortex-rostov.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8999788": {
+      "okoLeadId": 2912573,
+      "email": "kardashin@cpok.ru",
+      "responsibleId": 28418,
+      "triggaStatus": null,
+      "createdAt": "2026-10-17T03:15:12.331Z"
+    },
+    "8999801": {
+      "skippedHistorical": true,
+      "email": "mzakyrdaeva@prefex.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8999917": {
+      "skippedHistorical": true,
+      "email": "info@elektro-prof.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8999921": {
+      "skippedHistorical": true,
+      "email": "fv@dvsr.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "8999985": {
+      "skippedHistorical": true,
+      "email": "info@vsesvetodiody.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "9000023": {
+      "skippedHistorical": true,
+      "email": "9254333301@mail.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "9000049": {
+      "skippedHistorical": true,
+      "email": "info@etk-progress.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "9000057": {
+      "skippedHistorical": true,
+      "email": "info@shinoprovod.com",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "9000113": {
+      "skippedHistorical": true,
+      "email": "zapros@iloskreb.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "9000147": {
+      "skippedHistorical": true,
+      "email": "mrv@diora.pro",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "9000171": {
+      "skippedHistorical": true,
+      "email": "info@thehrd.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "9000270": {
+      "skippedHistorical": true,
+      "email": "grafullo@yandex.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "9000365": {
+      "skippedHistorical": true,
+      "email": "zapros@plavny-pusk.ru",
+      "recordedAt": "2026-10-17T03:12:07.791Z"
+    },
+    "9000394": {
+      "okoLeadId": 2912574,
+      "email": "denis.tarasov@compeq.ru",
+      "responsibleId": 28419,
+      "triggaStatus": null,
+      "createdAt": "2026-10-17T03:15:14.440Z"
+    },
+    "9000473": {
+      "skippedAutoReply": true,
+      "email": "ekzavod@mail.ru"
+    },
+    "9000484": {
+      "skippedAutoReply": true,
+      "email": "zakaz@b2b-power.ru"
+    }
+  },
+  "lastSyncAt": "2026-10-19T06:02:06.761Z"
+}

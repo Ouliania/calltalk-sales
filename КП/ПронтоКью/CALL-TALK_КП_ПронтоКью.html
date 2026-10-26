@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CALL-TALK — Коммерческое предложение | ПронтоКью</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #5B4BD8;
+    --primary-dark: #4738B5;
+    --primary-light: #F0ECFF;
+    --primary-border: #DCD5FA;
+    --teal: #0E8A6A;
+    --teal-light: #EAF8F3;
+    --teal-border: #BCE8DA;
+    --coral: #C66E4A;
+    --coral-light: #FFF1E9;
+    --coral-border: #FAD7C8;
+    --dark: #0F172A;
+    --text: #14152A;
+    --text-muted: #4B5563;
+    --text-light: #6B7280;
+    --border: #E2E8F0;
+    --bg-page: #64748B;
+    --bg-card: #FFFFFF;
+    --bg-alt: #F8FAFC;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body {
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-page);
+    color: var(--text);
+    font-size: 13.5px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .presentation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 24px 0;
+  }
+
+  .slide {
+    width: 1100px;
+    height: 618.75px;
+    min-width: 1100px;
+    min-height: 618.75px;
+    max-width: 1100px;
+    max-height: 618.75px;
+    background: #FFFFFF;
+    position: relative;
+    overflow: hidden;
+    padding: 32px 46px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* HEADER */
+  .slide-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  .logo-icon {
+    width: 26px;
+    height: 26px;
+    background: var(--primary);
+    color: white;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 900;
+  }
+
+  .header-badge {
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .header-link {
+    color: var(--text-light);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  /* BODY */
+  .slide-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    padding: 8px 0;
+  }
+
+  /* FOOTER */
+  .slide-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text-light);
+    font-weight: 600;
+  }
+
+  /* TYPOGRAPHY */
+  .slide-title-h1 {
+    font-size: 40px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-bottom: 14px;
+    line-height: 1.18;
+  }
+
+  .slide-title-h2 {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 4px;
+    line-height: 1.25;
+  }
+
+  .slide-lead {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+
+  /* CARDS */
+  .card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+
+  .card-alt {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .badge-purple {
+    background: var(--primary-light);
+    color: var(--primary);
+  }
+
+  .badge-teal {
+    background: var(--teal-light);
+    color: var(--teal);
+  }
+
+  .badge-coral {
+    background: var(--coral-light);
+    color: var(--coral);
+  }
+
+  /* TABLE */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+  }
+
+  .data-table th {
+    background: var(--bg-alt);
+    color: var(--text);
+    font-weight: 800;
+    text-align: left;
+    padding: 5px 10px;
+    border-bottom: 1.5px solid var(--border);
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .data-table td {
+    padding: 4px 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    line-height: 1.35;
+  }
+
+  .data-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .data-table tr.total-row td {
+    background: var(--primary-light);
+    font-weight: 800;
+    color: var(--primary);
+    border-top: 1.5px solid var(--primary-border);
+    padding: 5px 10px;
+  }
+
+  @media print {
+    body {
+      background: none;
+      padding: 0;
+    }
+    .presentation {
+      gap: 0;
+      padding: 0;
+    }
+    .slide {
+      page-break-after: always;
+      page-break-inside: avoid;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="presentation">
+
+  <!-- ==================== СЛАЙД 1: ТИТУЛЬНЫЙ ЛИСТ ==================== -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="header-brand">
+        <div class="logo-box"><div class="logo-icon">CT</div> Call-Talk</div>
+        <div class="header-badge">B2B Лидогенерация & Email-Аутрич</div>
+      </div>
+      <a href="https://calltalk.ru" class="header-link">calltalk.ru ↗</a>
+    </div>
+
+    <!-- ТИТУЛЬНЫЙ СЛАЙД СТРОГО ПО РЕГЛАМЕНТУ: ЦЕНТРИРОВАНИЕ, ТОЛЬКО H1 И БЕЙДЖ, БЕЗ ЛИШНЕГО ТЕКСТА -->
+    <div class="slide-body" style="justify-content: center; align-items: flex-start; padding: 40px 0;">
+      <div class="badge badge-purple" style="margin-bottom: 22px;">Коммерческое предложение</div>
+      <h1 class="slide-title-h1" style="max-width: 980px;">
+        Привлечение B2B-клиентов для компании «ПронтоКью» через <span style="color: var(--primary);">персонализированный email-аутрич</span>
+      </h1>
+    </div>
+
+    <div class="slide-footer">
+      <div>Call-Talk — Системный B2B-аутрич для «ПронтоКью»</div>
+      <div>Слайд 01 / 09</div>
+    </div>
+  </div>
+
+  <!-- ==================== СЛАЙД 2: ЦЕЛЕВОЙ РЫНОК И ЕМКОСТЬ БАЗЫ ==================== -->
+  <div class="slide" style="padding: 24px 46px;">
+    <div class="slide-header">
+      <div class="header-brand">
+        <div class="logo-box"><div class="logo-icon">CT</div> Call-Talk</div>
+        <div class="header-badge">Целевой рынок и емкость</div>
+      </div>
+      <a href="https://calltalk.ru" class="header-link">calltalk.ru ↗</a>
+    </div>
+
+    <div class="slide-body" style="padding: 4px 0;">
+      <div>
+        <h2 class="slide-title-h2">Целевой рынок: отраслевые сегменты и емкость базы</h2>
+        <div class="slide-lead" style="margin-bottom: 6px;">
+          Оценка первичного пула по РФ: 700–1 200 подходящих организаций для формирования рабочей адресной базы в 4 приоритетных сегментах.
+        </div>
+      </div>
+
+      <!-- ТАБЛИЦА СЕГМЕНТОВ -->
+      <table class="data-table" style="margin-bottom: 6px; font-size: 10.5px;">
+        <thead>
+          <tr>
+            <th style="width: 26%; padding: 4px 8px;">Отраслевой сегмент</th>
+            <th style="width: 46%; padding: 4px 8px;">Профиль заказчика и критерии потребности</th>
+            <th style="width: 14%; padding: 4px 8px;">Код ОКВЭД</th>
+            <th style="width: 14%; padding: 4px 8px; text-align: right;">Оценка кандидатов</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 3px 8px;"><strong>Частные клиники и медцентры</strong></td>
+            <td style="padding: 3px 8px; line-height: 1.3;">Многопрофильные центры и клиники с очным потоком пациентов и регистратурой. Устранение очередей, маршрутизация по кабинетам, интеграция с МИС.</td>
+            <td style="padding: 3px 8px;">86.10, 86.21, 86.22</td>
+            <td style="padding: 3px 8px; text-align: right; font-weight: 700;">450–700 компаний</td>
+          </tr>
+          <tr>
+            <td style="padding: 3px 8px;"><strong>Медицинские лаборатории и сети</strong></td>
+            <td style="padding: 3px 8px; line-height: 1.3;">Региональные операторы, сети и независимые лаборатории с процедурными кабинетами. Оптимизация забора анализов, сокращение времени ожидания.</td>
+            <td style="padding: 3px 8px;">86.90, 86.90.9</td>
+            <td style="padding: 3px 8px; text-align: right; font-weight: 700;">100–200 сетей</td>
+          </tr>
+          <tr>
+            <td style="padding: 3px 8px;"><strong>Банки с очным обслуживанием</strong></td>
+            <td style="padding: 3px 8px; line-height: 1.3;">Банки с физической сетью отделений. Маршрутизация потоков физических и юридических лиц, повышение стандартов обслуживания, мониторинг нагрузки.</td>
+            <td style="padding: 3px 8px;">64.19</td>
+            <td style="padding: 3px 8px; text-align: right; font-weight: 700;">30–80 банков</td>
+          </tr>
+          <tr>
+            <td style="padding: 3px 8px;"><strong>Транспорт и складская логистика</strong></td>
+            <td style="padding: 3px 8px; line-height: 1.3;">Транспортные операторы, терминалы выдачи грузов и склады с клиентскими зонами. Регулирование очередей водителей и посетителей при оформлении.</td>
+            <td style="padding: 3px 8px;">52.29, 52.10</td>
+            <td style="padding: 3px 8px; text-align: right; font-weight: 700;">120–220 компаний</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- 2 КАРТОЧКИ: ПРИОРИТЕТЫ И ЛПР -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <div class="card-alt" style="padding: 6px 10px;">
+          <div style="font-size: 10px; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 2px;">
+            КЛЮЧЕВЫЕ ЛПР ДЛЯ АУТРИЧА
+          </div>
+          <div style="font-size: 10.5px; color: var(--text); line-height: 1.3;">
+            IT-директора (CIO), Генеральные директора, Главные врачи, Операционные руководители и Директора по клиентскому сервису. Прямой выход на лиц, отвечающих за автоматизацию и клиентский опыт.
+          </div>
+        </div>
+
+        <div class="card-alt" style="padding: 6px 10px;">
+          <div style="font-size: 10px; font-weight: 800; color: var(--teal); text-transform: uppercase; margin-bottom: 2px;">
+            РУЧНОЙ СБОР И ВАЛИДАЦИЯ БАЗЫ
+          </div>
+          <div style="font-size: 10.5px; color: var(--text); line-height: 1.3;">
+            Ручной сбор базы под согласованные сегменты. Проверка активности юрлиц, наличия очных отделений и терминалов, исключение общих почт (info@). Отбор 2–3 релевантных контактов на организацию (~2 100 контактов).
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <div>Call-Talk — Системный B2B-аутрич для «ПронтоКью»</div>
+      <div>Слайд 02 / 09</div>
+    </div>
+  </div>
+
+  <!-- ==================== СЛАЙД 3: МЕТОДОЛОГИЯ ЗАПУСКА (НЕИЗМЕННЫЙ) ==================== -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="header-brand">
+        <div class="logo-box"><div class="logo-icon">CT</div> Call-Talk</div>
+        <div class="header-badge">Методология запуска</div>
+      </div>
+      <a href="https://calltalk.ru" class="header-link">calltalk.ru ↗</a>
+    </div>
+
+    <div class="slide-body">
+      <div>
+        <h2 class="slide-title-h2">Методология: 4 этапа выстраивания системного аутрича</h2>
+        <div class="slide-lead">
+          Пошаговый процесс от глубокого погружения в продукт до регулярной передачи целевых обращений.
+        </div>
+      </div>
+
+      <!-- 4 КАРТОЧКИ В РЯД -->
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;">
+        
+        <!-- Шаг 1 -->
+        <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 320px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 6px;">Шаг 01</div>
+            <h3 style="font-size: 15.5px; font-weight: 800; color: var(--text); margin-bottom: 8px; line-height: 1.3;">
+              Сбор и валидация базы контактов
+            </h3>
+            <p style="font-size: 11.5px; color: var(--text-muted); line-height: 1.45;">
+              Собираем базу вручную под критерии ICP. Исключаем недействующие организации, банкротов и дубли. Проверяем домены и валидируем почтовые сервера, отсекая ящики info@.
+            </p>
+          </div>
+          <div style="background: var(--bg-alt); border-radius: 8px; padding: 7px 10px; font-size: 11px; font-weight: 700; color: var(--text-light);">
+            Только целевые контакты
+          </div>
+        </div>
+
+        <!-- Шаг 2 -->
+        <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 320px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 6px;">Шаг 02</div>
+            <h3 style="font-size: 15.5px; font-weight: 800; color: var(--text); margin-bottom: 8px; line-height: 1.3;">
+              Анализ болей и подготовка офферов
+            </h3>
+            <p style="font-size: 11.5px; color: var(--text-muted); line-height: 1.45;">
+              Погружаемся в специфику продукта. Разрабатываем персональные сценарии коммуникации под разные роли ЛПР: для собственников — бизнес-результат, для функциональных директоров — операционные выгоды.
+            </p>
+          </div>
+          <div style="background: var(--bg-alt); border-radius: 8px; padding: 7px 10px; font-size: 11px; font-weight: 700; color: var(--text-light);">
+            Фокус на болях ЛПР
+          </div>
+        </div>
+
+        <!-- Шаг 3 -->
+        <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 320px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 6px;">Шаг 03</div>
+            <h3 style="font-size: 15.5px; font-weight: 800; color: var(--text); margin-bottom: 8px; line-height: 1.3;">
+              Тестирование связок и гипотез
+            </h3>
+            <p style="font-size: 11.5px; color: var(--text-muted); line-height: 1.45;">
+              Запускаем первые цепочки писем по узким выборкам. Тестируем варианты офферов, темы и заходы. Анализируем первые ответы и калибруем сообщения перед масштабированием.
+            </p>
+          </div>
+          <div style="background: var(--bg-alt); border-radius: 8px; padding: 7px 10px; font-size: 11px; font-weight: 700; color: var(--text-light);">
+            Быстрая обратная связь
+          </div>
+        </div>
+
+        <!-- Шаг 4 -->
+        <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 320px; border: 1.5px solid var(--primary); background: #FAF9FF;">
+          <div>
+            <div style="font-size: 11px; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 6px;">Шаг 04</div>
+            <h3 style="font-size: 15.5px; font-weight: 800; color: var(--primary); margin-bottom: 8px; line-height: 1.3;">
+              Масштабирование и системный аутрич
+            </h3>
+            <p style="font-size: 11.5px; color: var(--text-muted); line-height: 1.45;">
+              Масштабируем рассылку на всю целевую базу контактов с максимальной отдачей. Регулярно передаем квалифицированные лиды вашим менеджерам для завершения сделок.
+            </p>
+          </div>
+          <div style="background: var(--primary-light); border-radius: 8px; padding: 7px 10px; font-size: 11px; font-weight: 800; color: var(--primary);">
+            Стабильный поток лидов
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <div>Call-Talk — Системный B2B-аутрич для «ПронтоКью»</div>
+      <div>Слайд 03 / 09</div>
+    </div>
+  </div>
+
+  <!-- ==================== СЛАЙД 4: РЕЛЕВАНТНЫЕ КЕЙСЫ ==================== -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="header-brand">
+        <div class="logo-box"><div class="logo-icon">CT</div> Call-Talk</div>
+        <div class="header-badge">Релевантные кейсы</div>
+      </div>
+      <a href="https://calltalk.ru" class="header-link">calltalk.ru ↗</a>
+    </div>
+
+    <div class="slide-body">
+      <div>
+        <h2 class="slide-title-h2">Опыт реализации проектов в B2B-сегменте</h2>
+        <div class="slide-lead">
+          Примеры аутрича по IT-директорам, операционным руководителям и первым лицам коммерческих предприятий.
+        </div>
+      </div>
+
+      <!-- СЕТКА ИЗ 2 РЕАЛЬНЫХ КЕЙСОВ -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 12px;">
+        
+        <!-- КЕЙС 1: IT-разработка и заказной B2B-софт -->
+        <div class="card" style="padding: 14px 18px; display: flex; flex-direction: column; justify-content: space-between; border: 1.5px solid var(--primary); background: #FAF9FF;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <span style="font-size: 10.5px; font-weight: 800; color: var(--primary); text-transform: uppercase;">
+                IT-РАЗРАБОТКА И АВТОМАТИЗАЦИЯ
+              </span>
+              <span style="font-size: 10px; font-weight: 700; color: var(--teal); background: var(--teal-light); padding: 2px 7px; border-radius: 999px;">
+                КЕЙС 01
+              </span>
+            </div>
+            <h3 style="font-size: 15px; font-weight: 800; color: var(--primary); margin-bottom: 4px;">
+              Заказная IT-разработка и B2B-автоматизация
+            </h3>
+            <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4; margin-bottom: 6px;">
+              <strong>Специфика:</strong> Выход на IT-директоров (CIO), операционных руководителей и генеральных директоров компаний с очным обслуживанием и распределенной сетью.
+            </p>
+            <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4;">
+              <strong>Механика:</strong> Точечные цепочки с анализом прямых потерь на ручных процессах, предложение аудита узких мест и демонстрации решения.
+            </p>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; background: #FFFFFF; border: 1px solid var(--primary-border); padding: 6px 8px; border-radius: 8px; text-align: center;">
+            <div>
+              <div style="font-size: 16px; font-weight: 900; color: var(--primary);">23</div>
+              <div style="font-size: 9.5px; color: var(--text-muted);">лида получено</div>
+            </div>
+            <div>
+              <div style="font-size: 16px; font-weight: 900; color: var(--teal);">2</div>
+              <div style="font-size: 9.5px; color: var(--text-muted);">сделки в Enterprise</div>
+            </div>
+            <div>
+              <div style="font-size: 16px; font-weight: 900; color: var(--text);">2,5 мес</div>
+              <div style="font-size: 9.5px; color: var(--text-muted);">срок проекта</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- КЕЙС 2: Корпоративный B2B-сервис и платформы -->
+        <div class="card" style="padding: 14px 18px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <span style="font-size: 10.5px; font-weight: 800; color: var(--primary); text-transform: uppercase;">
+                КОРПОРАТИВНЫЙ B2B-СЕРВИС
+              </span>
+              <span style="font-size: 10px; font-weight: 700; color: var(--teal); background: var(--teal-light); padding: 2px 7px; border-radius: 999px;">
+                КЕЙС 02
+              </span>
+            </div>
+            <h3 style="font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 4px;">
+              Платформенный B2B-сервис для корпораций (GoGYM)
+            </h3>
+            <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4; margin-bottom: 6px;">
+              <strong>Специфика:</strong> Выход на функциональных директоров и первых лиц коммерческих организаций с распределенной структурой.
+            </p>
+            <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4;">
+              <strong>Механика:</strong> Короткие персональные цепочки без спам-триггеров, разбор бизнес-эффекта и предложение тестового сценария внедрения.
+            </p>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; background: var(--bg-alt); padding: 6px 8px; border-radius: 8px; text-align: center;">
+            <div>
+              <div style="font-size: 16px; font-weight: 900; color: var(--primary);">34</div>
+              <div style="font-size: 9.5px; color: var(--text-muted);">лида получено</div>
+            </div>
+            <div>
+              <div style="font-size: 16px; font-weight: 900; color: var(--teal);">5</div>
+              <div style="font-size: 9.5px; color: var(--text-muted);">партнеров закрыто</div>
+            </div>
+            <div>
+              <div style="font-size: 16px; font-weight: 900; color: var(--text);">2 мес</div>
+              <div style="font-size: 9.5px; color: var(--text-muted);">срок проекта</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ВЫВОД ПО КЕЙСАМ -->
+      <div style="font-size: 11px; color: var(--text-muted); line-height: 1.4; background: var(--bg-alt); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border);">
+        <strong>Ключевой вывод для «ПронтоКью»:</strong> Руководители частных клиник, лабораторий, банков и логистических терминалов открыты к диалогу, когда обращение адресует их конкретные операционные задачи (устранение очередей, маршрутизация потока, интеграция с учетными системами, повышение скорости обслуживания) и не содержит спам-шаблонов. Аутрич снимает барьер секретарей и сразу выводит на предметное обсуждение задач.
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <div>Call-Talk — Системный B2B-аутрич для «ПронтоКью»</div>
+      <div>Слайд 04 / 09</div>
+    </div>
+  </div>
+
+  <!-- ==================== СЛАЙД 5: ТАРИФЫ И УСЛОВИЯ (ИНТЕРЕС VS ВСТРЕЧИ НА 2 МЕСЯЦА) ==================== -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="header-brand">
+        <div class="logo-box"><div class="logo-icon">CT</div> Call-Talk</div>
+        <div class="header-badge">Условия сотрудничества · Оплата за результат</div>
+      </div>
+      <a href="https://calltalk.ru" class="header-link">calltalk.ru ↗</a>
+    </div>
+
+    <div class="slide-body" style="justify-content: flex-start; gap: 12px; padding-top: 4px;">
+      <div>
+        <h2 class="slide-title-h2">Формат работы: 2 тарифа на 2 месяца под ваши бизнес-задачи</h2>
+        <div class="slide-lead" style="margin-bottom: 0;">
+          Единый пилотный период (2 месяца) с выбором формата лидогенерации: передача подтвержденного интереса либо организация квалифицированных встреч.
+        </div>
+      </div>
+
+      <!-- 2 ВАРИАНТА ТАРИФА -->
+      <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px;">
+        
+        <!-- Тариф 1: 2 месяца (Подтвержденный интерес) -->
+        <div class="card" style="padding: 14px 18px; border: 1.5px solid var(--primary); background: #FAF9FF; position: relative;">
+          <div style="position: absolute; top: -9px; right: 14px; background: var(--primary); color: #FFFFFF; font-size: 9.5px; font-weight: 800; padding: 2px 8px; border-radius: 999px; text-transform: uppercase;">
+            БАЗОВЫЙ ФОРМАТ · ИНТЕРЕС
+          </div>
+          <div style="font-size: 11px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">
+            СПРИНТ 2 МЕСЯЦА (ПОДТВЕРЖДЕННЫЙ ИНТЕРЕС)
+          </div>
+          <div style="margin-bottom: 6px;">
+            <div style="display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap;">
+              <span style="font-size: 24px; font-weight: 900; color: var(--primary); line-height: 1;">56 000 руб.</span>
+              <span style="font-size: 12px; font-weight: 700; color: var(--primary);">/мес</span>
+              <span style="font-size: 17px; font-weight: 900; color: var(--teal); margin-left: 6px;">+ 2 800 руб.</span>
+              <span style="font-size: 11.5px; font-weight: 700; color: var(--text-muted);">/лид</span>
+            </div>
+            <div style="font-size: 10.5px; color: var(--text-light); margin-top: 2px; font-weight: 600;">
+              (112 000 руб. фикс за весь период, оплата сразу или 50/50 по 56 000 руб.)
+            </div>
+          </div>
+          <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4; margin: 0 0 8px 0;">
+            Фикс 112 000 руб. обеспечивает ручной сбор базы 2 100 контактов, почтовую инфраструктуру, персональные цепочки и ведение кампании. Оплата за результат — строго за лиды с подтвержденным интересом (<strong>2 800 руб./лид</strong>). Передаем диалоги вашим сотрудникам для презентации и расчета сметы.
+          </p>
+
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; background: #FFFFFF; border: 1px solid var(--primary-border); border-radius: 8px; padding: 5px 8px; text-align: center;">
+            <div>
+              <div style="font-size: 14.5px; font-weight: 900; color: var(--primary);">2 мес</div>
+              <div style="font-size: 9px; font-weight: 700; color: var(--text-muted);">Срок спринта</div>
+            </div>
+            <div>
+              <div style="font-size: 14.5px; font-weight: 900; color: var(--text);">2 100</div>
+              <div style="font-size: 9px; font-weight: 700; color: var(--text-muted);">База в обработке</div>
+            </div>
+            <div>
+              <div style="font-size: 14.5px; font-weight: 900; color: var(--teal);">25 – 42</div>
+              <div style="font-size: 9px; font-weight: 700; color: var(--text-muted);">Прогноз лидов</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Тариф 2: 2 месяца (Квалифицированные встречи) -->
+        <div class="card" style="padding: 14px 18px; border: 1.5px solid var(--teal); background: #FAFDFB; position: relative;">
+          <div style="position: absolute; top: -9px; right: 14px; background: var(--teal); color: #FFFFFF; font-size: 9.5px; font-weight: 800; padding: 2px 8px; border-radius: 999px; text-transform: uppercase;">
+            ПРЕМИУМ-ФОРМАТ · ВСТРЕЧИ
+          </div>
+          <div style="font-size: 11px; font-weight: 800; color: var(--teal); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">
+            СПРИНТ 2 МЕСЯЦА (КВАЛИФИЦИРОВАННЫЕ ВСТРЕЧИ)
+          </div>
+          <div style="margin-bottom: 6px;">
+            <div style="display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap;">
+              <span style="font-size: 24px; font-weight: 900; color: var(--text); line-height: 1;">56 000 руб.</span>
+              <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);">/мес</span>
+              <span style="font-size: 17px; font-weight: 900; color: var(--teal); margin-left: 6px;">+ 7 500 руб.</span>
+              <span style="font-size: 11.5px; font-weight: 700; color: var(--text-muted);">/встреча</span>
+            </div>
+            <div style="font-size: 10.5px; color: var(--text-light); margin-top: 2px; font-weight: 600;">
+              (112 000 руб. фикс за весь период, оплата сразу или 50/50 по 56 000 руб.)
+            </div>
+          </div>
+          <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4; margin: 0 0 8px 0;">
+            Фикс 112 000 руб. обеспечивает ручной сбор базы 2 100 контактов, почтовую инфраструктуру и глубокую квалификацию ответов. Оплата только за согласованную онлайн-встречу или предметный созвон с ЛПР (<strong>7 500 руб./встреча</strong>). Ваша команда не тратит время на переписку, а сразу выходит на показ решения.
+          </p>
+
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; background: #FFFFFF; border: 1px solid var(--teal-border); border-radius: 8px; padding: 5px 8px; text-align: center;">
+            <div>
+              <div style="font-size: 14.5px; font-weight: 900; color: var(--teal);">2 мес</div>
+              <div style="font-size: 9px; font-weight: 700; color: var(--text-muted);">Срок спринта</div>
+            </div>
+            <div>
+              <div style="font-size: 14.5px; font-weight: 900; color: var(--text);">2 100</div>
+              <div style="font-size: 9px; font-weight: 700; color: var(--text-muted);">База в обработке</div>
+            </div>
+            <div>
+              <div style="font-size: 14.5px; font-weight: 900; color: var(--teal);">10 – 16</div>
+              <div style="font-size: 9px; font-weight: 700; color: var(--text-muted);">Встреч и созвонов</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 2 ПЛАШКИ: КРИТЕРИИ И ИНФРАСТРУКТУРА -->
+      <div style="display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 16px;">
+        
+        <!-- Зеленая: Критерий валидного лида и встречи -->
+        <div style="background: var(--teal-light); border: 1px solid var(--teal-border); border-radius: 10px; padding: 10px 14px;">
+          <div style="font-size: 10px; font-weight: 800; color: var(--teal); text-transform: uppercase; margin-bottom: 4px;">
+            ✓ КРИТЕРИИ ВАЛИДНОГО ЛИДА И ВСТРЕЧИ (ОПЛАТА ЗА РЕЗУЛЬТАТ):
+          </div>
+          <ul style="margin: 0; padding-left: 14px; font-size: 10px; color: #064E3B; line-height: 1.35; display: flex; flex-direction: column; gap: 2px;">
+            <li><strong>Подтвержденный интерес:</strong> ЛПР подтвердил интерес к системе электронной очереди ПронтоКью, запросил КП, смету, цены или технические детали;</li>
+            <li><strong>Квалифицированная встреча:</strong> согласован точный слот (дата и время) для онлайн-встречи/демо либо зафиксирован предметный телефонный созвон с ЛПР;</li>
+            <li><strong>Передача контакта:</strong> получен прямой контакт профильного руководителя, готового к коммуникации и подтвердившего интерес;</li>
+            <li>Лид передается вам для заключения сделки. Отчетность и сверка статусов ведутся регулярно.</li>
+          </ul>
+        </div>
+
+        <!-- Серая: Инфраструктура и защита бюджета -->
+        <div style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px;">
+          <div style="font-size: 10px; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 4px;">
+            ИНФРАСТРУКТУРА И 100% ЗАЩИТА БЮДЖЕТА
+          </div>
+          <ul style="margin: 0; padding-left: 14px; font-size: 10px; color: var(--text-muted); line-height: 1.35; display: flex; flex-direction: column; gap: 2px;">
+            <li><strong>Рассылка с ящиков клиента:</strong> почты предоставляет клиент (даем инструкцию по SPF/DKIM/DMARC) либо настраиваем под ключ, безопасный прогрев;</li>
+            <li><strong>100% защита бюджета:</strong> автоответы, спам и прямые отказы («не интересно», «уже есть система») не тарифицируются (0 руб.);</li>
+            <li><strong>Договорное исключение:</strong> если передан контакт, но ЛПР не вышел на связь после 3 попыток за 5 рабочих дней — лид не оплачивается.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <div>Call-Talk — Системный B2B-аутрич для «ПронтоКью»</div>
+      <div>Слайд 05 / 09</div>
+    </div>
+  </div>
+
+  <!-- ==================== СЛАЙД 6: ВОРОНКА И ОКУПАЕМОСТЬ НА 2 МЕСЯЦА (ПОДТВЕРЖДЕННЫЙ ИНТЕРЕС) ==================== -->
+  <div class="slide" style="padding: 26px 46px;">
+    <div class="slide-header">
+      <div class="header-brand">
+        <div class="logo-box"><div class="logo-icon">CT</div> Call-Talk</div>
+        <div class="header-badge">Экономика: Тариф «Подтвержденный интерес» (2 мес.)</div>
+      </div>
+      <a href="https://calltalk.ru" class="header-link">calltalk.ru ↗</a>
+    </div>
+
+    <div class="slide-body" style="padding: 4px 0;">
+      <div>
+        <h2 class="slide-title-h2">Воронка и окупаемость · Тариф с оплатой за подтвержденный интерес (2 месяца)</h2>
+        <div class="slide-lead" style="margin-bottom: 5px;">
+          Расчет экономики пилота на 2 месяца: база 2 100 контактов, цепочки из 3 касаний, прогноз 25–42 лида с интересом, конверсия в сделку строго 15%.
+        </div>
+      </div>
+
+      <!-- ТАБЛИЦА ВОРОНКИ ПО МЕСЯЦАМ -->
+      <table class="data-table" style="margin-bottom: 6px; font-size: 10.5px;">
+        <thead>
+          <tr>
+            <th style="padding: 4px 8px;">Период кампании</th>
+            <th style="padding: 4px 8px;">База в обработке</th>
+            <th style="padding: 4px 8px;">Отправлено писем (цепочки)</th>
+            <th style="padding: 4px 8px; text-align: right;">Лиды с интересом</th>
+            <th style="padding: 4px 8px; text-align: right;">Закрытые сделки (конверсия 15%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 3px 8px;"><strong>Месяц 1</strong> (настройка, прогрев ящиков, запуск клиник и лабораторий)</td>
+            <td style="padding: 3px 8px;">600 контактов</td>
+            <td style="padding: 3px 8px;">1 800 писем</td>
+            <td style="padding: 3px 8px; text-align: right; font-weight: 700;">8 – 14 лидов</td>
+            <td style="padding: 3px 8px; text-align: right; font-weight: 700; color: var(--teal);">1 – 2 закрытые сделки</td>
+          </tr>
+          <tr>
+            <td style="padding: 3px 8px;"><strong>Месяц 2</strong> (масштабирование: подключение банков и логистики)</td>
+            <td style="padding: 3px 8px;">1 500 контактов</td>
+            <td style="padding: 3px 8px;">4 500 писем</td>
+            <td style="padding: 3px 8px; text-align: right; font-weight: 700;">17 – 28 лидов</td>
+            <td style="padding: 3px 8px; text-align: right; font-weight: 700; color: var(--teal);">3 – 4 закрытые сделки</td>
+          </tr>
+          <tr class="total-row">
+            <td style="padding: 4px 8px;"><strong>ИТОГО ЗА 2 МЕСЯЦА</strong></td>
+            <td style="padding: 4px 8px;"><strong>2 100 контактов</strong></td>
+            <td style="padding: 4px 8px;"><strong>6 300 отправлений</strong></td>
+            <td style="padding: 4px 8px; text-align: right;"><strong>25 – 42 лида с интересом</strong></td>
+            <td style="padding: 4px 8px; text-align: right; color: var(--primary);"><strong>4 – 6 закрытых сделок</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- АКЦЕНТНАЯ ПЛАШКА ROI (4 ЯЧЕЙКИ) -->
+      <div style="display: grid; grid-template-columns: 1fr 1.15fr 1.15fr 1.1fr; gap: 8px; margin-bottom: 6px;">
+        
+        <div class="card-alt" style="padding: 7px 9px; text-align: center;">
+          <div style="font-size: 18px; font-weight: 900; color: var(--primary);">4 – 6 сделок</div>
+          <div style="font-size: 10px; font-weight: 700; color: var(--text); margin-top: 1px;">Закрытых контрактов</div>
+          <div style="font-size: 9px; color: var(--text-light);">Конверсия 15% из ~33 лидов</div>
+        </div>
+
+        <div class="card-alt" style="padding: 7px 9px; text-align: center;">
+          <div style="font-size: 18px; font-weight: 900; color: var(--teal);">1,2 – 1,8 млн руб.</div>
+          <div style="font-size: 10px; font-weight: 700; color: var(--text); margin-top: 1px;">Привлеченный оборот</div>
+          <div style="font-size: 9px; color: var(--text-light);">При среднем чеке 300 000 руб.</div>
+        </div>
+
+        <div class="card-alt" style="padding: 7px 9px; text-align: center;">
+          <div style="font-size: 18px; font-weight: 900; color: var(--coral);">~204 400 руб.</div>
+          <div style="font-size: 10px; font-weight: 700; color: var(--text); margin-top: 1px;">Все расходы за 2 мес</div>
+          <div style="font-size: 9px; color: var(--text-light);">112 000 руб. фикс + 33 лида × 2 800 руб.</div>
+        </div>
+
+        <div style="background: var(--primary); color: #FFFFFF; border-radius: 10px; padding: 8px 6px; text-align: center; display: flex; flex-direction: column; justify-content: center;">
+          <div style="font-size: 17px; font-weight: 900; color: #FFFFFF; line-height: 1.2;">С 3-й сделки</div>
+          <div style="font-size: 10px; font-weight: 700; color: #FFFFFF; margin-top: 1px;">Полная окупаемость</div>
+          <div style="font-size: 9px; color: #DCD5FA; margin-top: 1px; font-weight: 600;">Еще 1 – 3 сделки в чистую прибыль</div>
+        </div>
+
+      </div>
+
+      <div style="font-size: 10px; color: var(--text-muted); line-height: 1.35; background: var(--bg-alt); padding: 5px 10px; border-radius: 8px; border: 1px solid var(--border);">
+        <div><strong>Специфика юнит-экономики тарифа:</strong> При ориентире стоимости одного внедрения решения 300 000 руб. и среднеотраслевой маржинальности 30% валовая прибыль со сделки составляет 90 000 руб..</div>
+        <div style="margin-top: 2px;"><strong>Логика окупаемости:</strong> Общие затраты за 2 месяца (~204 400 руб.) полностью окупаются с 3-й закрытой сделки первого цикла. Оставшиеся 1 – 3 сделки приносят от 90 000 до 270 000 руб. чистой прибыли сверх маркетинговых затрат. Повторные заказы и масштабирование сети терминалов заказчиков приносят прибыль без затрат на маркетинг. Точные цифры зафиксированы только на услуги Call-Talk. Конверсия, чек и маржинальность — средние ориентиры ниши.</div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <div>Call-Talk — Системный B2B-аутрич для «ПронтоКью»</div>
+      <div>Слайд 06 / 09</div>
+    </div>
+  </div>
+
+  <!-- ==================== СЛАЙД 7: ВОРОНКА И ОКУПАЕМОСТЬ НА 2 МЕСЯЦА (КВАЛИФИЦИРОВАННЫЕ ВСТРЕЧИ) ==================== -->
+  <div class="slide" style="padding: 26px 46px;">
+    <div class="slide-header">
+      <div class="header-brand">
+        <div class="logo-box"><div class="logo-icon">CT</div> Call-Talk</div>
+        <div class="header-badge">Экономика: Тариф «Квалифицированные встречи» (2 мес.)</div>
+      </div>
+      <a href="https://calltalk.ru" class="header-link">calltalk.ru ↗</a>
+    </div>
+
+    <div class="slide-body" style="padding: 4px 0;">
+      <div>
+        <h2 class="slide-title-h2">Воронка и окупаемость · Тариф с оплатой за квалифицированные встречи (2 месяца)</h2>
+        <div class="slide-lead" style="margin-bottom: 5px;">
+          Расчет экономики пилота на 2 месяца: база 2 100 контактов, глубокая квалификация диалогов, прогноз 10–16 встреч/созвонов, конверсия в сделку ~25%.
+        </div>
+      </div>
+
+      <!-- ТАБЛИЦА ВОРОНКИ ПО МЕСЯЦАМ -->
+      <table class="data-table" style="margin-bottom: 6px; font-size: 10.5px;">
+        <thead>
+          <tr>
+            <th style="padding: 4px 8px;">Период кампании</th>
+            <th style="padding: 4px 8px;">База в обработке</th>
+            <th style="padding: 4px 8px;">Отправлено писем (цепочки)</th>
+            <th style="padding: 4px 8px; text-align: right;">Квалифицированные встречи/созвоны</th>
+            <th style="padding: 4px 8px; text-align: right;">Закрытые сделки (конверсия ~25%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 3px 8px;"><strong>Месяц 1</strong> (настройка, прогрев ящиков, запуск клиник и лабораторий)</td>
+            <td style="padding: 3px 8px;">600 контактов</td>
+            <td style="padding: 3px 8px;">1 800 писем</td>
+            <td style="padding: 3px 8px; text-align: right; font-weight: 700;">3 – 5 встреч/созвонов</td>
+            <td style="padding: 3px 8px; text-align: right; font-weight: 700; color: var(--teal);">1 закрытая сделка</td>
+          </tr>
+          <tr>
+            <td style="padding: 3px 8px;"><strong>Месяц 2</strong> (масштабирование: подключение банков и логистики)</td>
+            <td style="padding: 3px 8px;">1 500 контактов</td>
+            <td style="padding: 3px 8px;">4 500 писем</td>
+            <td style="padding: 3px 8px; text-align: right; font-weight: 700;">7 – 11 встреч/созвонов</td>
+            <td style="padding: 3px 8px; text-align: right; font-weight: 700; color: var(--teal);">2 – 3 закрытые сделки</td>
+          </tr>
+          <tr class="total-row">
+            <td style="padding: 4px 8px;"><strong>ИТОГО ЗА 2 МЕСЯЦА</strong></td>
+            <td style="padding: 4px 8px;"><strong>2 100 контактов</strong></td>
+            <td style="padding: 4px 8px;"><strong>6 300 отправлений</strong></td>
+            <td style="padding: 4px 8px; text-align: right;"><strong>10 – 16 встреч и созвонов</strong></td>
+            <td style="padding: 4px 8px; text-align: right; color: var(--primary);"><strong>3 – 4 закрытые сделки</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- АКЦЕНТНАЯ ПЛАШКА ROI (4 ЯЧЕЙКИ) -->
+      <div style="display: grid; grid-template-columns: 1fr 1.15fr 1.15fr 1.1fr; gap: 8px; margin-bottom: 6px;">
+        
+        <div class="card-alt" style="padding: 7px 9px; text-align: center;">
+          <div style="font-size: 18px; font-weight: 900; color: var(--primary);">3 – 4 сделки</div>
+          <div style="font-size: 10px; font-weight: 700; color: var(--text); margin-top: 1px;">Закрытых контрактов</div>
+          <div style="font-size: 9px; color: var(--text-light);">Конверсия ~25% из ~13 встреч</div>
+        </div>
+
+        <div class="card-alt" style="padding: 7px 9px; text-align: center;">
+          <div style="font-size: 18px; font-weight: 900; color: var(--teal);">0,9 – 1,2 млн руб.</div>
+          <div style="font-size: 10px; font-weight: 700; color: var(--text); margin-top: 1px;">Привлеченный оборот</div>
+          <div style="font-size: 9px; color: var(--text-light);">При среднем чеке 300 000 руб.</div>
+        </div>
+
+        <div class="card-alt" style="padding: 7px 9px; text-align: center;">
+          <div style="font-size: 18px; font-weight: 900; color: var(--coral);">~209 500 руб.</div>
+          <div style="font-size: 10px; font-weight: 700; color: var(--text); margin-top: 1px;">Все расходы за 2 мес</div>
+          <div style="font-size: 9px; color: var(--text-light);">112 000 руб. фикс + 13 встреч × 7 500 руб.</div>
+        </div>
+
+        <div style="background: var(--primary); color: #FFFFFF; border-radius: 10px; padding: 8px 6px; text-align: center; display: flex; flex-direction: column; justify-content: center;">
+          <div style="font-size: 17px; font-weight: 900; color: #FFFFFF; line-height: 1.2;">С 3-й сделки</div>
+          <div style="font-size: 10px; font-weight: 700; color: #FFFFFF; margin-top: 1px;">Полная окупаемость</div>
+          <div style="font-size: 9px; color: #DCD5FA; margin-top: 1px; font-weight: 600;">4-я сделка в чистую прибыль</div>
+        </div>
+
+      </div>
+
+      <div style="font-size: 10px; color: var(--text-muted); line-height: 1.35; background: var(--bg-alt); padding: 5px 10px; border-radius: 8px; border: 1px solid var(--border);">
+        <div><strong>Специфика юнит-экономики тарифа:</strong> Формат квалифицированных встреч экономит время команды ПронтоКью: менеджеры подключаются сразу к готовому диалогу с назначенным временем созвона или демонстрации ПО. Валовая прибыль со сделки — 90 000 руб..</div>
+        <div style="margin-top: 2px;"><strong>Логика окупаемости и масштабирования:</strong> Затраты за 2 месяца (~209 500 руб.) окупаются с 3-й сделки. 4-я сделка дает чистую прибыль. При масштабировании проекта на 4 месяца ежемесячный фикс снижается до 39 000 руб./мес (156 000 руб. за 4 мес.), объем базы расширяется до 5 100 контактов, а суммарный поток встреч и чистая прибыль вырастают более чем в 2,5 раза. Точные цифры зафиксированы только на услуги Call-Talk. Конверсия и чек — рыночные ориентиры ниши.</div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <div>Call-Talk — Системный B2B-аутрич для «ПронтоКью»</div>
+      <div>Слайд 07 / 09</div>
+    </div>
+  </div>
+
+  <!-- ==================== СЛАЙД 8: ПЛАН ПО НЕДЕЛЯМ (ГРАФИК ЗАПУСКА — НЕИЗМЕННЫЙ) ==================== -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="header-brand">
+        <div class="logo-box"><div class="logo-icon">CT</div> Call-Talk</div>
+        <div class="header-badge">График запуска</div>
+      </div>
+      <a href="https://calltalk.ru" class="header-link">calltalk.ru ↗</a>
+    </div>
+
+    <div class="slide-body">
+      <div>
+        <h2 class="slide-title-h2">План реализации проекта по неделям</h2>
+        <div class="slide-lead">
+          Четкий график перехода от согласования договора к первым целевым откликам потенциальных заказчиков.
+        </div>
+      </div>
+
+      <!-- 4 КАРТОЧКИ ЭТАПОВ -->
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;">
+        
+        <div class="card" style="padding: 16px 14px; height: 325px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="font-size: 11px; font-weight: 800; color: var(--primary); margin-bottom: 6px;">ЭТАП 01 · 1–2 ДНЯ</div>
+            <h3 style="font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 8px;">Подготовка почт</h3>
+            <p style="font-size: 11.5px; color: var(--text-muted); line-height: 1.4;">
+              Предоставляем подробную инструкцию по подключению ящиков на вспомогательных доменах (или подключаем под ключ). Настраиваем SPF, DKIM и DMARC для защиты репутации.
+            </p>
+          </div>
+          <div style="font-size: 11px; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 6px 10px; border-radius: 6px;">
+            Защита репутации почты
+          </div>
+        </div>
+
+        <div class="card" style="padding: 16px 14px; height: 325px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="font-size: 11px; font-weight: 800; color: var(--primary); margin-bottom: 6px;">ЭТАП 02 · 3–10 ДНЕЙ</div>
+            <h3 style="font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 8px;">Сбор базы и цепочки писем</h3>
+            <p style="font-size: 11.5px; color: var(--text-muted); line-height: 1.4;">
+              Собираем базу компаний по согласованным сегментам. Формируем цепочки из 3 писем с фокусом на боли ЛПР. Запускаем безопасный алгоритмический прогрев почтовых ящиков.
+            </p>
+          </div>
+          <div style="font-size: 11px; font-weight: 700; color: var(--text-light); background: var(--bg-alt); padding: 6px 10px; border-radius: 6px;">
+            Индивидуальные сценарии
+          </div>
+        </div>
+
+        <div class="card" style="padding: 16px 14px; height: 325px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="font-size: 11px; font-weight: 800; color: var(--primary); margin-bottom: 6px;">ЭТАП 03 · НЕДЕЛИ 3–4</div>
+            <h3 style="font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 8px;">Старт рассылок и первые лиды</h3>
+            <p style="font-size: 11.5px; color: var(--text-muted); line-height: 1.4;">
+              Запускаем отправку первого спринта (600 контактов). Вручную обрабатываем и квалифицируем входящие ответы. Передаем первые целевые лиды в работу вашим специалистам.
+            </p>
+          </div>
+          <div style="font-size: 11px; font-weight: 700; color: var(--teal); background: var(--teal-light); padding: 6px 10px; border-radius: 6px;">
+            Первые заинтересованные клиенты
+          </div>
+        </div>
+
+        <div class="card" style="padding: 16px 14px; height: 325px; display: flex; flex-direction: column; justify-content: space-between; border: 1.5px solid var(--primary); background: #FAF9FF;">
+          <div>
+            <div style="font-size: 11px; font-weight: 800; color: var(--primary); margin-bottom: 6px;">ЭТАП 04 · МЕСЯЦЫ 2–4</div>
+            <h3 style="font-size: 14px; font-weight: 800; color: var(--primary); margin-bottom: 8px;">Масштабирование потока</h3>
+            <p style="font-size: 11.5px; color: var(--text-muted); line-height: 1.4;">
+              Масштабируем рассылку до 1 500 контактов в месяц. Подключаем новые сегменты, калибруем тексты по аналитике откликов. Обеспечиваем ритмичный приток B2B-заявок.
+            </p>
+          </div>
+          <div style="font-size: 11px; font-weight: 800; color: var(--primary); background: var(--primary-light); padding: 6px 10px; border-radius: 6px;">
+            Системный поток контрактов
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <div>Call-Talk — Системный B2B-аутрич для «ПронтоКью»</div>
+      <div>Слайд 08 / 09</div>
+    </div>
+  </div>
+
+  <!-- ==================== СЛАЙД 9: СЛЕДУЮЩИЙ ШАГ И КОНТАКТЫ (НЕИЗМЕННЫЙ) ==================== -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="header-brand">
+        <div class="logo-box"><div class="logo-icon">CT</div> Call-Talk</div>
+        <div class="header-badge">Следующий шаг</div>
+      </div>
+      <a href="https://calltalk.ru" class="header-link">calltalk.ru ↗</a>
+    </div>
+
+    <div class="slide-body" style="justify-content: center;">
+      <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px; align-items: stretch;">
+        
+        <!-- Левая колонка: ДВА СЦЕНАРИЯ ДЕЙСТВИЙ -->
+        <div style="display: flex; flex-direction: column; justify-content: space-between; gap: 14px;">
+          
+          <div class="card" style="padding: 18px 20px; border: 1.5px solid var(--primary); background: #FAF9FF;">
+            <div style="font-size: 11px; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 4px;">
+              ЕСЛИ ВСЁ ПОДХОДИТ
+            </div>
+            <h4 style="font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 6px;">
+              Фиксация договоренностей и старт
+            </h4>
+            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.45;">
+              Выбираем подходящий формат сотрудничества (Спринт на 2 месяца: 56 000 руб./мес + оплата за подтвержденный интерес 2 800 руб./лид либо за квалифицированные встречи 7 500 руб./встреча). Подписываем договор, подключаем почтовые ящики и запускаем сбор базы.
+            </p>
+          </div>
+
+          <div class="card" style="padding: 18px 20px;">
+            <div style="font-size: 11px; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 4px;">
+              ЕСЛИ ОСТАЛИСЬ ВОПРОСЫ
+            </div>
+            <h4 style="font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 6px;">
+              Открытый рабочий диалог
+            </h4>
+            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.45;">
+              Задайте их прямо сейчас — согласуем критерии квалификации лидов, приоритетные сегменты компаний и формат отчетности.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Правая колонка: ФИОЛЕТОВАЯ КАРТОЧКА КОНТАКТОВ (#5B4BD8) ДЛЯ МЕНЕДЖЕРА АНДРЕЯ -->
+        <div style="background: var(--primary); color: #FFFFFF; border-radius: 14px; padding: 22px 24px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+              <div style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden; border: 2.5px solid rgba(255,255,255,0.4); flex-shrink: 0;">
+                <img src="Andrey.jpg" alt="Андрей" style="width: 100%; height: 100%; object-fit: cover; display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div style="width: 100%; height: 100%; display: none; align-items: center; justify-content: center; background: rgba(255,255,255,0.2); color: white; font-weight: 800; font-size: 20px;">АН</div>
+              </div>
+              <div>
+                <div style="font-size: 17px; font-weight: 800; color: #FFFFFF;">Андрей</div>
+                <div style="font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.9); margin-top: 2px;">Ведущий специалист B2B-лидогенерации Call-Talk</div>
+                <div style="font-size: 11px; color: rgba(255,255,255,0.75); margin-top: 2px;">
+                  Персональное ведение кампании, контроль базы и качества каждого лида
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 10px; font-size: 13px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.18); padding-bottom: 8px;">
+                <span style="color: rgba(255,255,255,0.75);">Telegram:</span>
+                <a href="https://t.me/calltalk_ru" target="_blank" style="color: #FFFFFF; text-decoration: none; font-weight: 700; background: rgba(255,255,255,0.18); padding: 3px 10px; border-radius: 6px;">@calltalk_ru ↗</a>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.18); padding-bottom: 8px;">
+                <span style="color: rgba(255,255,255,0.75);">Email:</span>
+                <a href="mailto:andrey.s@calltalk.ru" style="color: #FFFFFF; text-decoration: none; font-weight: 600;">andrey.s@calltalk.ru</a>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="color: rgba(255,255,255,0.75);">Сайт:</span>
+                <a href="https://calltalk.ru" target="_blank" style="color: #FFFFFF; text-decoration: none; font-weight: 600;">calltalk.ru</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- СТРОГО НЕИЗМЕННЫЙ БЛОК ОСНОВАТЕЛЯ ИГОРЯ ЕРМОЛАЕВА ПО РЕГЛАМЕНТУ -->
+          <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.18); font-size: 10.5px; color: rgba(255,255,255,0.88); line-height: 1.35;">
+            <div>Основатель: <strong style="color: #FFFFFF;">Игорь Ермолаев</strong></div>
+            <div style="color: rgba(255,255,255,0.8); margin-top: 3px;">
+              15 лет в маркетинге и управлении, лидогенерация в 22 отраслях.<br>
+              Вырастил Airo в 14 раз за 2,5 года (инвесторы — МТС и Т-Банк) — совладелец.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <div>Call-Talk — Системный B2B-аутрич для «ПронтоКью»</div>
+      <div>Слайд 09 / 09</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
