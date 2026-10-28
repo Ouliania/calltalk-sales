@@ -42,3 +42,7 @@ tmp/
 # OS / Editor
 .vscode/
 .idea/
+
+# Scripts, Bots & Non-sales
+Bots : Scripts/
+HR - поиск/
