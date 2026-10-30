@@ -139,5 +139,27 @@ class ValidatorTests(unittest.TestCase):
                           "окупаемость", "ready")
 
 
+    def test_regional_market_label_is_allowed(self):
+        changed = self.ready.replace("Организаций в РФ", "В Иркутске и миллионниках", 1)
+        self.assert_ok(changed, "ready")
+
+    def test_self_comparison_does_not_hide_template_change(self):
+        import shutil
+        with tempfile.TemporaryDirectory() as tmp:
+            validator = Path(tmp) / "validate_kp_v3.py"
+            template = Path(tmp) / "CALL-TALK_Эталон_КП_9_слайдов_v3.html"
+            shutil.copyfile(VALIDATOR, validator)
+            template.write_text(
+                self.template.replace("{{REV_4M_20}}", "{{НЕСОГЛАСОВАННОЕ_ПОЛЕ}}", 1),
+                encoding="utf-8",
+            )
+            result = subprocess.run(
+                [sys.executable, str(validator), "--template", str(template)],
+                capture_output=True, text=True, check=False,
+            )
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("контрольного списка", result.stdout)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
