@@ -359,7 +359,40 @@
   .sm-econ3 th:first-child,.sm-econ3 td:first-child{width:40%;text-align:left}
   .sm-econ3 th:not(:first-child),.sm-econ3 td:not(:first-child){text-align:right;width:20%}
   .sm-econ3 td{padding-top:6px;padding-bottom:6px}
-</style></head>
+</style>
+<style>
+/* Экономика: акцент на доходе клиента и окупаемости */
+.benefit-head .sm-title{font-size:23px;margin-bottom:5px}.benefit-head .sm-sub{font-size:12px;margin-bottom:10px}
+.benefit-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:11px}
+.benefit-card{height:250px;border:1px solid var(--border);border-radius:12px;background:#fff;padding:13px 16px 14px;display:flex;flex-direction:column;justify-content:space-between;min-width:0}
+.benefit-main{background:#FAF9FF;border:2px solid var(--primary);padding:12px 15px 13px}
+.benefit-top{display:flex;align-items:center;justify-content:space-between;gap:4px;min-height:21px}
+.benefit-boxes{font-weight:900;color:var(--text);font-size:14px}
+.chosen-pill{font-size:9px;font-weight:900;color:var(--primary);border-radius:6px;background:var(--primary-light);padding:4px 6px;white-space:nowrap}
+.scenario-note{font-size:9px;color:var(--text-light)}.revenue{padding-top:5px}
+.revenue>span{display:block;color:var(--primary);font-size:30px;line-height:1.15;font-weight:900;letter-spacing:-.025em;white-space:nowrap}
+.benefit-main .revenue>span{font-size:32px}.revenue-label{font-size:10.5px;line-height:1.35;color:var(--text-muted);margin-top:4px}
+.profit{border-top:1px solid var(--border);padding-top:10px}
+.profit>span{display:block;color:var(--teal);font-weight:900;font-size:24px;line-height:1.15;white-space:nowrap}
+.benefit-main .profit>span{font-size:25px}.profit-label{font-size:10px;color:var(--text-muted);line-height:1.3;margin-top:4px;max-width:260px}
+.benefit-end{display:flex;align-items:flex-end;justify-content:space-between;gap:8px}
+.payback{display:flex;flex-direction:column;background:var(--teal-light);border:1px solid var(--teal-border);border-radius:8px;padding:7px 9px}
+.payback b{font-weight:900;font-size:12px;color:var(--teal);line-height:1.2;white-space:nowrap}
+.payback span{font-size:9.5px;color:#326D58;margin-top:2px}
+.deal-count{font-size:10.4px;color:var(--text-muted);font-weight:800;white-space:nowrap;padding-bottom:3px}
+.detail-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 5px}
+.detail-head strong{font-size:11.5px;color:var(--text);font-weight:900}.detail-head span{font-size:10px;color:var(--text-muted)}
+.benefit-table{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:10px;font-size:10.8px}
+.benefit-table th{background:var(--bg-alt);font-size:10px;text-align:right;color:var(--text);padding:5px 12px;font-weight:800;border-bottom:1px solid var(--border)}
+.benefit-table th:first-child{text-align:left;width:40%}
+.benefit-table td{text-align:right;padding:5px 12px;border-bottom:1px solid var(--border);line-height:1.2;color:var(--text)}
+.benefit-table td:first-child{text-align:left}.benefit-table tr:last-child td{border-bottom:0}
+.benefit-table tr td:nth-child(3),.benefit-table tr th:nth-child(3){background:#FAF9FF;font-weight:800}
+.benefit-table .minor-row td{font-size:10px;color:var(--text-light);background:#FBFCFE}
+.benefit-table .minor-row td:nth-child(3){background:#F6F4FF}
+.formula-note{font-size:9.4px;line-height:1.3;color:var(--text-light);margin-top:6px}
+</style>
+</head>
 <body>
 <div class="presentation">
 <!-- ==================== СЛАЙД 1: ТИТУЛЬНЫЙ ЛИСТ ==================== -->
@@ -615,97 +648,67 @@
 </div>
 <div class="slide-footer"><div>Call-Talk — Привлечение B2B-клиентов для {{КОМПАНИЯ}}</div><div>Слайд 05 / 09</div></div>
 </div>
-<!-- ==================== СЛАЙД 6: ЭКОНОМИКА, 2 МЕСЯЦА ==================== -->
+<!-- ==================== СЛАЙД 6: ВОРОНКА И ОКУПАЕМОСТЬ, 2 МЕСЯЦА ==================== -->
 <div class="slide" style="padding:24px 46px;">
-<div class="slide-header"><div class="header-brand"><div class="logo-box"><div class="logo-icon">CT</div> Call-Talk</div><div class="header-badge">Экономика: Тариф на 2 месяца</div></div><a class="header-link" href="https://calltalk.ru">calltalk.ru ↗</a></div>
-<div class="slide-body" style="justify-content:flex-start;gap:10px;padding:6px 0 4px;">
-<div><h2 class="sm-title">Экономика на 2 месяца: 10, 20 или 30 почтовых ящиков</h2>
-<p class="sm-sub">При среднем чеке {{ЧЕК}} руб. и конверсии лидов в договоры {{КОНВЕРСИЯ}}%.</p></div>
-<div class="sm-highlight" style="margin-bottom:10px;padding:9px 12px"><b style="font-size:13.2px">20 ящиков — {{ЛИДОВ_МЕСЯЦ}} заинтересованных лидов в месяц со второго месяца</b></div>
-<table class="sm-table sm-econ-table sm-econ3">
-<thead><tr><th>Показатель</th><th>10 почтовых ящиков</th><th>20 почтовых ящиков</th><th>30 почтовых ящиков</th></tr></thead>
-<tbody><tr class=""><td>Контактов в обработке</td><td>2 100</td><td><b>4 200</b></td><td>6 300</td></tr>
-<tr class=""><td>План писем в цепочках</td><td>6 300</td><td><b>12 600</b></td><td>18 900</td></tr>
-<tr class=""><td>Прогноз лидов</td><td>{{M2_10}}</td><td><b>{{M2_20}}</b></td><td>{{M2_30}}</td></tr>
-<tr class=""><td>Лидов в расчетном примере</td><td>{{E2_10}}</td><td><b>{{E2_20}}</b></td><td>{{E2_30}}</td></tr>
-<tr class=""><td>Фикс за 2 месяца</td><td>112 000 руб.</td><td><b>112 000 руб.</b></td><td>112 000 руб.</td></tr>
-<tr class="em"><td>Бюджет Call-Talk: фикс + <b>{{ЦЕНА_ЛИДА}} руб.</b> за лид</td><td>{{B2_10}} руб.</td><td><b>{{B2_20}} руб.</b></td><td>{{B2_30}} руб.</td></tr></tbody></table>
-<div class="sm-grid3" style="margin-top:12px"><div class="sm-panel">
-<div class="sm-eyebrow">10 ящиков · расчет при {{E2_10}} лидах</div>
-<div class="sm-metric-pair" style="margin-top:8px">
-<div><div class="sm-value">≈{{D2_10}}</div><div class="sm-kpi-label">возможных договоров</div></div>
-<div><div class="sm-value">{{R2_10}} руб.</div><div class="sm-kpi-label">выручка от заказов</div></div>
+<div class="slide-header"><div class="header-brand"><div class="logo-box"><div class="logo-icon">CT</div> Call-Talk</div><div class="header-badge">Воронка и окупаемость · Тариф на 2 месяца</div></div><a class="header-link" href="https://calltalk.ru">calltalk.ru ↗</a></div>
+<div class="slide-body" style="justify-content:flex-start;gap:0;padding:6px 0 5px;">
+<div class="benefit-head"><h2 class="sm-title">{{SLIDE6_TITLE}}</h2><p class="sm-sub">{{ECONOMY_ASSUMPTIONS}}</p></div>
+<div class="benefit-cards"><div class="benefit-card">
+<div class="benefit-top"><div class="benefit-boxes">10 ящиков</div><span class="scenario-note">Масштаб рассылки</span></div>
+<div class="revenue"><span>{{REV_2M_10}}</span><div class="revenue-label">потенциальная годовая выручка</div></div>
+<div class="profit"><span>{{PROFIT_2M_10}}</span><div class="profit-label">маржинальная прибыль после расходов на Call-Talk</div></div>
+<div class="benefit-end"><div class="payback"><b>{{PAYBACK_2M_10}}</b><span>окупаются затраты</span></div><div class="deal-count">{{DEALS_2M_10}}</div></div>
 </div>
-<div class="sm-div" style="margin:8px 0"></div>
-<p><b>{{B2_10}} руб.</b> — бюджет Call-Talk</p>
-<p><b>{{C2_10}} руб.</b> — общие расходы в расчете на лид</p>
-</div><div class="sm-panel purple">
-<div class="sm-eyebrow">20 ящиков · расчет при {{E2_20}} лидах</div>
-<div class="sm-metric-pair" style="margin-top:8px">
-<div><div class="sm-value">≈{{D2_20}}</div><div class="sm-kpi-label">возможных договоров</div></div>
-<div><div class="sm-value">{{R2_20}} руб.</div><div class="sm-kpi-label">выручка от заказов</div></div>
+<div class="benefit-card benefit-main">
+<div class="benefit-top"><div class="benefit-boxes">20 ящиков</div><span class="chosen-pill">Рекомендуемый вариант</span></div>
+<div class="revenue"><span>{{REV_2M_20}}</span><div class="revenue-label">потенциальная годовая выручка</div></div>
+<div class="profit"><span>{{PROFIT_2M_20}}</span><div class="profit-label">маржинальная прибыль после расходов на Call-Talk</div></div>
+<div class="benefit-end"><div class="payback"><b>{{PAYBACK_2M_20}}</b><span>окупаются затраты</span></div><div class="deal-count">{{DEALS_2M_20}}</div></div>
 </div>
-<div class="sm-div" style="margin:8px 0"></div>
-<p><b>{{B2_20}} руб.</b> — бюджет Call-Talk</p>
-<p><b>{{C2_20}} руб.</b> — общие расходы в расчете на лид</p>
-</div><div class="sm-panel">
-<div class="sm-eyebrow">30 ящиков · расчет при {{E2_30}} лидах</div>
-<div class="sm-metric-pair" style="margin-top:8px">
-<div><div class="sm-value">≈{{D2_30}}</div><div class="sm-kpi-label">возможных договоров</div></div>
-<div><div class="sm-value">{{R2_30}} руб.</div><div class="sm-kpi-label">выручка от заказов</div></div>
-</div>
-<div class="sm-div" style="margin:8px 0"></div>
-<p><b>{{B2_30}} руб.</b> — бюджет Call-Talk</p>
-<p><b>{{C2_30}} руб.</b> — общие расходы в расчете на лид</p>
+<div class="benefit-card">
+<div class="benefit-top"><div class="benefit-boxes">30 ящиков</div><span class="scenario-note">Масштаб рассылки</span></div>
+<div class="revenue"><span>{{REV_2M_30}}</span><div class="revenue-label">потенциальная годовая выручка</div></div>
+<div class="profit"><span>{{PROFIT_2M_30}}</span><div class="profit-label">маржинальная прибыль после расходов на Call-Talk</div></div>
+<div class="benefit-end"><div class="payback"><b>{{PAYBACK_2M_30}}</b><span>окупаются затраты</span></div><div class="deal-count">{{DEALS_2M_30}}</div></div>
 </div></div>
+<div class="detail-head"><strong>На каких объемах основан расчет</strong><span>Варианты на 10, 20 и 30 почтовых ящиков</span></div>
+<table class="benefit-table"><thead><tr><th>Показатель</th><th>10 ящиков</th><th>20 ящиков</th><th>30 ящиков</th></tr></thead><tbody><tr><td>Контактов в обработке</td><td>{{CONTACTS_2M_10}}</td><td>{{CONTACTS_2M_20}}</td><td>{{CONTACTS_2M_30}}</td></tr>
+<tr><td>Прогноз заинтересованных лидов</td><td>{{LEADS_2M_10}}</td><td>{{LEADS_2M_20}}</td><td>{{LEADS_2M_30}}</td></tr>
+<tr><td>Лидов для расчета</td><td>{{LEADS_CALC_2M_10}}</td><td>{{LEADS_CALC_2M_20}}</td><td>{{LEADS_CALC_2M_30}}</td></tr>
+<tr class="minor-row"><td>Расходы на Call-Talk, включая оплату лидов</td><td>{{BUDGET_2M_10}}</td><td>{{BUDGET_2M_20}}</td><td>{{BUDGET_2M_30}}</td></tr></tbody></table>
+<p class="formula-note">{{FORMULA_NOTE_2M}}</p>
+</div><div class="slide-footer"><div>Call-Talk — Привлечение B2B-клиентов для {{КОМПАНИЯ}}</div><div>Слайд 06 / 09</div></div>
 </div>
-<div class="slide-footer"><div>Call-Talk — Привлечение B2B-клиентов для {{КОМПАНИЯ}}</div><div>Слайд 06 / 09</div></div>
-</div>
-<!-- ==================== СЛАЙД 7: ЭКОНОМИКА, 4 МЕСЯЦА ==================== -->
+<!-- ==================== СЛАЙД 7: ВОРОНКА И ОКУПАЕМОСТЬ, 4 МЕСЯЦА ==================== -->
 <div class="slide" style="padding:24px 46px;">
-<div class="slide-header"><div class="header-brand"><div class="logo-box"><div class="logo-icon">CT</div> Call-Talk</div><div class="header-badge">Экономика: Тариф на 4 месяца</div></div><a class="header-link" href="https://calltalk.ru">calltalk.ru ↗</a></div>
-<div class="slide-body" style="justify-content:flex-start;gap:10px;padding:6px 0 4px;">
-<div><h2 class="sm-title">Экономика на 4 месяца: 10, 20 или 30 почтовых ящиков</h2>
-<p class="sm-sub">При среднем чеке {{ЧЕК}} руб. и конверсии лидов в договоры {{КОНВЕРСИЯ}}%.</p></div>
-<div class="sm-highlight" style="margin-bottom:10px;padding:9px 12px"><b style="font-size:13.2px">20 ящиков — {{ЛИДОВ_МЕСЯЦ}} заинтересованных лидов в месяц со второго месяца</b></div>
-<table class="sm-table sm-econ-table sm-econ3">
-<thead><tr><th>Показатель</th><th>10 почтовых ящиков</th><th>20 почтовых ящиков</th><th>30 почтовых ящиков</th></tr></thead>
-<tbody><tr class=""><td>Контактов в обработке</td><td>5 100</td><td><b>10 200</b></td><td>15 300</td></tr>
-<tr class=""><td>План писем в цепочках</td><td>15 300</td><td><b>30 600</b></td><td>45 900</td></tr>
-<tr class=""><td>Прогноз лидов</td><td>{{M4_10}}</td><td><b>{{M4_20}}</b></td><td>{{M4_30}}</td></tr>
-<tr class=""><td>Лидов в расчетном примере</td><td>{{E4_10}}</td><td><b>{{E4_20}}</b></td><td>{{E4_30}}</td></tr>
-<tr class=""><td>Фикс за 4 месяца</td><td>156 000 руб.</td><td><b>156 000 руб.</b></td><td>156 000 руб.</td></tr>
-<tr class="em"><td>Бюджет Call-Talk: фикс + <b>{{ЦЕНА_ЛИДА}} руб.</b> за лид</td><td>{{B4_10}} руб.</td><td><b>{{B4_20}} руб.</b></td><td>{{B4_30}} руб.</td></tr></tbody></table>
-<div class="sm-grid3" style="margin-top:12px"><div class="sm-panel">
-<div class="sm-eyebrow">10 ящиков · расчет при {{E4_10}} лидах</div>
-<div class="sm-metric-pair" style="margin-top:8px">
-<div><div class="sm-value">≈{{D4_10}}</div><div class="sm-kpi-label">возможных договоров</div></div>
-<div><div class="sm-value">{{R4_10}} руб.</div><div class="sm-kpi-label">выручка от заказов</div></div>
+<div class="slide-header"><div class="header-brand"><div class="logo-box"><div class="logo-icon">CT</div> Call-Talk</div><div class="header-badge">Воронка и окупаемость · Тариф на 4 месяца</div></div><a class="header-link" href="https://calltalk.ru">calltalk.ru ↗</a></div>
+<div class="slide-body" style="justify-content:flex-start;gap:0;padding:6px 0 5px;">
+<div class="benefit-head"><h2 class="sm-title">{{SLIDE7_TITLE}}</h2><p class="sm-sub">{{ECONOMY_ASSUMPTIONS}}</p></div>
+<div class="benefit-cards"><div class="benefit-card">
+<div class="benefit-top"><div class="benefit-boxes">10 ящиков</div><span class="scenario-note">Масштаб рассылки</span></div>
+<div class="revenue"><span>{{REV_4M_10}}</span><div class="revenue-label">потенциальная годовая выручка</div></div>
+<div class="profit"><span>{{PROFIT_4M_10}}</span><div class="profit-label">маржинальная прибыль после расходов на Call-Talk</div></div>
+<div class="benefit-end"><div class="payback"><b>{{PAYBACK_4M_10}}</b><span>окупаются затраты</span></div><div class="deal-count">{{DEALS_4M_10}}</div></div>
 </div>
-<div class="sm-div" style="margin:8px 0"></div>
-<p><b>{{B4_10}} руб.</b> — бюджет Call-Talk</p>
-<p><b>{{C4_10}} руб.</b> — общие расходы в расчете на лид</p>
-</div><div class="sm-panel purple">
-<div class="sm-eyebrow">20 ящиков · расчет при {{E4_20}} лидах</div>
-<div class="sm-metric-pair" style="margin-top:8px">
-<div><div class="sm-value">≈{{D4_20}}</div><div class="sm-kpi-label">возможных договоров</div></div>
-<div><div class="sm-value">{{R4_20}} руб.</div><div class="sm-kpi-label">выручка от заказов</div></div>
+<div class="benefit-card benefit-main">
+<div class="benefit-top"><div class="benefit-boxes">20 ящиков</div><span class="chosen-pill">Рекомендуемый вариант</span></div>
+<div class="revenue"><span>{{REV_4M_20}}</span><div class="revenue-label">потенциальная годовая выручка</div></div>
+<div class="profit"><span>{{PROFIT_4M_20}}</span><div class="profit-label">маржинальная прибыль после расходов на Call-Talk</div></div>
+<div class="benefit-end"><div class="payback"><b>{{PAYBACK_4M_20}}</b><span>окупаются затраты</span></div><div class="deal-count">{{DEALS_4M_20}}</div></div>
 </div>
-<div class="sm-div" style="margin:8px 0"></div>
-<p><b>{{B4_20}} руб.</b> — бюджет Call-Talk</p>
-<p><b>{{C4_20}} руб.</b> — общие расходы в расчете на лид</p>
-</div><div class="sm-panel">
-<div class="sm-eyebrow">30 ящиков · расчет при {{E4_30}} лидах</div>
-<div class="sm-metric-pair" style="margin-top:8px">
-<div><div class="sm-value">≈{{D4_30}}</div><div class="sm-kpi-label">возможных договоров</div></div>
-<div><div class="sm-value">{{R4_30}} руб.</div><div class="sm-kpi-label">выручка от заказов</div></div>
-</div>
-<div class="sm-div" style="margin:8px 0"></div>
-<p><b>{{B4_30}} руб.</b> — бюджет Call-Talk</p>
-<p><b>{{C4_30}} руб.</b> — общие расходы в расчете на лид</p>
+<div class="benefit-card">
+<div class="benefit-top"><div class="benefit-boxes">30 ящиков</div><span class="scenario-note">Масштаб рассылки</span></div>
+<div class="revenue"><span>{{REV_4M_30}}</span><div class="revenue-label">потенциальная годовая выручка</div></div>
+<div class="profit"><span>{{PROFIT_4M_30}}</span><div class="profit-label">маржинальная прибыль после расходов на Call-Talk</div></div>
+<div class="benefit-end"><div class="payback"><b>{{PAYBACK_4M_30}}</b><span>окупаются затраты</span></div><div class="deal-count">{{DEALS_4M_30}}</div></div>
 </div></div>
-</div>
-<div class="slide-footer"><div>Call-Talk — Привлечение B2B-клиентов для {{КОМПАНИЯ}}</div><div>Слайд 07 / 09</div></div>
+<div class="detail-head"><strong>На каких объемах основан расчет</strong><span>Варианты на 10, 20 и 30 почтовых ящиков</span></div>
+<table class="benefit-table"><thead><tr><th>Показатель</th><th>10 ящиков</th><th>20 ящиков</th><th>30 ящиков</th></tr></thead><tbody><tr><td>Контактов в обработке</td><td>{{CONTACTS_4M_10}}</td><td>{{CONTACTS_4M_20}}</td><td>{{CONTACTS_4M_30}}</td></tr>
+<tr><td>Прогноз заинтересованных лидов</td><td>{{LEADS_4M_10}}</td><td>{{LEADS_4M_20}}</td><td>{{LEADS_4M_30}}</td></tr>
+<tr><td>Лидов для расчета</td><td>{{LEADS_CALC_4M_10}}</td><td>{{LEADS_CALC_4M_20}}</td><td>{{LEADS_CALC_4M_30}}</td></tr>
+<tr class="minor-row"><td>Расходы на Call-Talk, включая оплату лидов</td><td>{{BUDGET_4M_10}}</td><td>{{BUDGET_4M_20}}</td><td>{{BUDGET_4M_30}}</td></tr></tbody></table>
+<p class="formula-note">{{FORMULA_NOTE_4M}}</p>
+</div><div class="slide-footer"><div>Call-Talk — Привлечение B2B-клиентов для {{КОМПАНИЯ}}</div><div>Слайд 07 / 09</div></div>
 </div>
 <!-- ==================== СЛАЙД 8: ПЛАН ПО НЕДЕЛЯМ (ГРАФИК ЗАПУСКА — НЕИЗМЕННЫЙ) ==================== -->
 <div class="slide">

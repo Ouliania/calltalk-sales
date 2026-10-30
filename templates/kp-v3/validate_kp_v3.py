@@ -40,6 +40,28 @@ if len(slides) == 9:
         check(len(market.select("tbody tr")) == 6,
               "Слайд 2: должно быть пять сегментов и итог")
     check("4 этапа" in text(3), "Слайд 3: нет четырех этапов")
+    # Неизменяемые заголовки и подписи методологии: не перефразировать.
+    stage3 = slides[2]
+    headings3 = [h.get_text(" ", strip=True) for h in stage3.select("h3")]
+    fixed_headings3 = [
+        "Подбор компаний и контактов",
+        "Предложения под задачи заказчиков",
+        "Проверка цепочек писем",
+        "Расширение кампании и передача лидов",
+    ]
+    fixed_captions3 = [
+        "База целевых контактов",
+        "Письма под разные задачи",
+        "Выбор лучших цепочек",
+        "Заинтересованные обращения",
+    ]
+    check(headings3 == fixed_headings3,
+          "Слайд 3: изменены постоянные названия четырех этапов")
+    caption_nodes3 = stage3.select('.slide-body > div[style*="grid-template-columns"] > .card > div:last-child')
+    captions3 = [node.get_text(" ", strip=True) for node in caption_nodes3]
+    check(captions3 == fixed_captions3,
+          "Слайд 3: изменены нижние подписи четырех этапов")
+
     case_cols = slides[3].select_one('.slide-body > div[style*="grid-template-columns"]')
     cards = case_cols.find_all("div", class_="card", recursive=False) if case_cols else []
     check(len(cards) == 2, "Слайд 4: две колонки — кейс и преимущества")
@@ -63,17 +85,55 @@ if len(slides) == 9:
         rows = card.select("table.sm-table tbody tr")
         check(len(rows) == 3, "Слайд 5: нужны варианты 10/20/30 ящиков")
     for page in (6, 7):
-        table = slides[page - 1].select_one("table.sm-econ-table")
-        check(table is not None, f"Слайд {page}: нет таблицы экономики")
+        slide = slides[page - 1]
+        table = slide.select_one("table.benefit-table")
+        check(table is not None, f"Слайд {page}: нет справочной таблицы воронки")
         if table:
             check(len(table.select("thead th")) == 4,
-                  f"Слайд {page}: таблица должна сравнивать три масштаба")
-            check(len(table.select("tbody tr")) == 6,
-                  f"Слайд {page}: потеряны строки экономики")
-        check(len(slides[page - 1].select(".sm-grid3 > .sm-panel")) == 3,
-              f"Слайд {page}: нужны три расчетные карточки")
-        check("общие расходы в расчете на лид" in text(page).lower(),
-              f"Слайд {page}: неверное название итогового показателя")
+                  f"Слайд {page}: нужна таблица для 10/20/30 ящиков")
+            check(len(table.select("tbody tr")) == 4,
+                  f"Слайд {page}: нужны контакты, прогноз, лиды для расчета и расходы")
+        cards = slide.select(".benefit-cards > .benefit-card")
+        check(len(cards) == 3, f"Слайд {page}: нужны три карточки финансового результата")
+        if len(cards) == 3:
+            check("benefit-main" in cards[1].get("class", []),
+                  f"Слайд {page}: рекомендуемый вариант — средняя карточка")
+            for card in cards:
+                check(card.select_one(".revenue") is not None,
+                      f"Слайд {page}: нужна потенциальная выручка")
+                check(card.select_one(".profit") is not None,
+                      f"Слайд {page}: нужна прибыль после расходов")
+                check(card.select_one(".payback") is not None,
+                      f"Слайд {page}: нужен порог окупаемости")
+        cards_container = slide.select_one(".benefit-cards")
+        table_container = slide.select_one("table.benefit-table")
+        if cards_container and table_container:
+            check(bool(cards_container.sourceline is not None and table_container.sourceline is not None
+                       and cards_container.sourceline < table_container.sourceline),
+                  f"Слайд {page}: финансовые карточки должны быть над таблицей")
+        check(len(slide.select(".benefit-cards")) == 1,
+              f"Слайд {page}: нельзя добавлять другие наборы карточек")
+        check("маржинальная прибыль после расходов" in text(page).lower(),
+              f"Слайд {page}: нет ключевого результата для клиента")
+        check("потенциальная годовая выручка" in text(page).lower(),
+              f"Слайд {page}: нет ключевого показателя выручки")
+        check("общие расходы в расчете на лид" not in text(page).lower(),
+              f"Слайд {page}: старый акцент на стоимости лида")
+    # Защищаем четыре этапа запуска от изменения названий и подписей.
+    stage8 = slides[7]
+    headings8 = [h.get_text(" ", strip=True) for h in stage8.select(".slide-body h3")]
+    fixed_headings8 = [
+        "Подготовка почты и сегментов",
+        "База контактов и цепочки писем",
+        "Первый запуск и ответы",
+        "Расширение кампании",
+    ]
+    check(headings8 == fixed_headings8,
+          "Слайд 8: изменены постоянные названия этапов")
+    for fixed in ["Защищаем доставляемость писем", "Тексты и база под ключ",
+                  "Первые ответы от компаний", "Регулярная передача лидов"]:
+        check(text(8).count(fixed) == 1,
+              f"Слайд 8: изменена или продублирована подпись: {fixed}")
     check("Тексты и база под ключ" in text(8), "Слайд 8: обязательная подпись")
     check("Защищаем доставляемость писем" in text(8),
           "Слайд 8: обязательная подпись")
@@ -86,7 +146,7 @@ if len(slides) == 9:
         check(bool(slide.select_one(".slide-header")) and bool(slide.select_one(".slide-footer")),
               f"Слайд {i}: нет хедера или футера")
 
-raw = soup.get_text(" ", strip=True)
+raw = soup.get_text(" ", strip=True)\nif args.ready:\n    check("с его слов" not in raw.casefold() and "со слов клиента" not in raw.casefold(),\n          "В клиентском КП осталась внутренняя помета о происхождении кейса")
 placeholders = re.findall(r"\{\{[^}]+\}\}", raw)
 if args.template:
     check(bool(placeholders), "Шаблон должен содержать поля заполнения")
