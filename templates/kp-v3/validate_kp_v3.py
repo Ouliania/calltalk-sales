@@ -63,17 +63,32 @@ if len(slides) == 9:
         rows = card.select("table.sm-table tbody tr")
         check(len(rows) == 3, "Слайд 5: нужны варианты 10/20/30 ящиков")
     for page in (6, 7):
-        table = slides[page - 1].select_one("table.sm-econ-table")
-        check(table is not None, f"Слайд {page}: нет таблицы экономики")
+        slide = slides[page - 1]
+        table = slide.select_one("table.benefit-table")
+        check(table is not None, f"Слайд {page}: нет справочной таблицы воронки")
         if table:
             check(len(table.select("thead th")) == 4,
-                  f"Слайд {page}: таблица должна сравнивать три масштаба")
-            check(len(table.select("tbody tr")) == 6,
-                  f"Слайд {page}: потеряны строки экономики")
-        check(len(slides[page - 1].select(".sm-grid3 > .sm-panel")) == 3,
-              f"Слайд {page}: нужны три расчетные карточки")
-        check("общие расходы в расчете на лид" in text(page).lower(),
-              f"Слайд {page}: неверное название итогового показателя")
+                  f"Слайд {page}: нужна таблица для 10/20/30 ящиков")
+            check(len(table.select("tbody tr")) == 4,
+                  f"Слайд {page}: нужны контакты, прогноз, лиды для расчета и расходы")
+        cards = slide.select(".benefit-cards > .benefit-card")
+        check(len(cards) == 3, f"Слайд {page}: нужны три карточки финансового результата")
+        if len(cards) == 3:
+            check("benefit-main" in cards[1].get("class", []),
+                  f"Слайд {page}: рекомендуемый вариант — средняя карточка")
+            for card in cards:
+                check(card.select_one(".revenue") is not None,
+                      f"Слайд {page}: нужна потенциальная выручка")
+                check(card.select_one(".profit") is not None,
+                      f"Слайд {page}: нужна прибыль после расходов")
+                check(card.select_one(".payback") is not None,
+                      f"Слайд {page}: нужен порог окупаемости")
+        check("маржинальная прибыль после расходов" in text(page).lower(),
+              f"Слайд {page}: нет ключевого результата для клиента")
+        check("потенциальная годовая выручка" in text(page).lower(),
+              f"Слайд {page}: нет ключевого показателя выручки")
+        check("общие расходы в расчете на лид" not in text(page).lower(),
+              f"Слайд {page}: старый акцент на стоимости лида")
     check("Тексты и база под ключ" in text(8), "Слайд 8: обязательная подпись")
     check("Защищаем доставляемость писем" in text(8),
           "Слайд 8: обязательная подпись")
