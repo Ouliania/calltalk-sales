@@ -13,13 +13,13 @@ VALIDATOR = HERE / "validate_kp_v3.py"
 REFERENCE = HERE / "CALL-TALK_Эталон_КП_9_слайдов_v3.html"
 
 
-def run_validator(html, mode="template"):
+def run_validator(html, mode="template", extra_args=()):
     with tempfile.TemporaryDirectory() as folder:
         candidate = Path(folder) / "kp.html"
         candidate.write_text(html, encoding="utf-8")
         return subprocess.run(
             [sys.executable, str(VALIDATOR), "--" + mode, str(candidate),
-             "--reference", str(REFERENCE)],
+             "--reference", str(REFERENCE), *extra_args],
             capture_output=True, text=True, check=False,
         )
 
@@ -113,10 +113,9 @@ class ValidatorTests(unittest.TestCase):
         self.assert_error(changed, "обязательные поля")
 
     def test_internal_annotation_rejected(self):
-        changed = self.template.replace(
-            "РЕАЛЬНЫЙ КЕЙС", "РЕАЛЬНЫЙ КЕЙС (со слов клиента)", 1,
-        )
-        self.assert_error(changed, "служебная")
+        source = "Отберем компании по Тест и найдем профильных сотрудников."
+        changed = self.ready.replace(source, source + " (со слов клиента)", 1)
+        self.assert_error(changed, "служебная атрибуция", "ready")
 
     def test_footer_note_rejected(self):
         changed = self.template.replace(
@@ -159,6 +158,47 @@ class ValidatorTests(unittest.TestCase):
             )
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("контрольного списка", result.stdout)
+
+
+    def test_internal_note_in_existing_paragraph_rejected(self):
+        source = "Отберем компании по Тест и найдем профильных сотрудников."
+        self.assertIn(source, self.ready)
+        changed = self.ready.replace(source, source + " (с его слов)", 1)
+        self.assert_error(changed, "служебный источник", "ready")
+
+    def test_manager_attribution_rejected(self):
+        source = "Отберем компании по Тест и найдем профильных сотрудников."
+        changed = self.ready.replace(source, source + " (по словам менеджера)", 1)
+        self.assert_error(changed, "служебная атрибуция", "ready")
+
+    def test_preliminary_hypothesis_requires_review(self):
+        source = "Отберем компании по Тест и найдем профильных сотрудников."
+        changed = self.ready.replace(source, source + " Это лишь предварительная гипотеза.", 1)
+        self.assert_error(changed, "Редакторское согласование", "ready")
+
+    def test_unnecessary_overlap_disclaimer_requires_review(self):
+        source = "Отберем компании по Тест и найдем профильных сотрудников."
+        changed = self.ready.replace(source, source + " Возможны пересечения.", 1)
+        self.assert_error(changed, "Редакторское согласование", "ready")
+
+    def test_legal_disclaimer_can_be_approved_explicitly(self):
+        source = "Отберем компании по Тест и найдем профильных сотрудников."
+        changed = self.ready.replace(source, source + " Не является гарантией результата.", 1)
+        self.assert_error(changed, "Редакторское согласование", "ready")
+        result = run_validator(changed, "ready", ("--allow-editorial-warnings",))
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("НА РУЧНОМ СОГЛАСОВАНИИ:", result.stdout)
+
+    def test_static_label_cannot_acquire_explanation(self):
+        source = '<div class="revenue-label">потенциальная годовая выручка</div>'
+        self.assertIn(source, self.ready)
+        changed = self.ready.replace(source, '<div class="revenue-label">потенциальная годовая выручка (примечание)</div>', 1)
+        self.assert_error(changed, "фиксированная подпись", "ready")
+
+    def test_normal_forecast_wording_is_allowed(self):
+        source = "Отберем компании по Тест и найдем профильных сотрудников."
+        changed = self.ready.replace(source, "Отберем компании по расчетным критериям и найдем профильных сотрудников.", 1)
+        self.assert_ok(changed, "ready")
 
 
 if __name__ == "__main__":
