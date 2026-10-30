@@ -122,7 +122,7 @@ class ValidatorTests(unittest.TestCase):
         changed = self.template.replace(
             "Слайд 03 / 09", "Слайд 03 / 09 · Гарантия", 1,
         )
-        self.assert_error(changed, "футер")
+        self.assert_error(changed, "номер страницы")
 
     def test_placeholder_inside_attribute_rejected(self):
         changed = self.ready.replace(
