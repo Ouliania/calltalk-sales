@@ -12,6 +12,8 @@ g.add_argument("--template", type=Path)
 g.add_argument("--ready", type=Path)
 p.add_argument("--client", default="")
 p.add_argument("--reference", type=Path, help="Путь к эталонному HTML для сравнения")
+p.add_argument("--allow-editorial-warnings", action="store_true",
+               help="Явно разрешить спорные оценочные пояснения после ручной редакторской проверки")
 args = p.parse_args()
 file = args.template or args.ready
 html = file.read_text(encoding="utf-8")
@@ -146,11 +148,62 @@ if len(slides) == 9:
         check(bool(slide.select_one(".slide-header")) and bool(slide.select_one(".slide-footer")),
               f"Слайд {i}: нет хедера или футера")
 
+# Редакторский контроль: не путаем расчетные допущения с ненужными оговорками.
+# Нельзя надежно оценить пользу произвольного текста только регулярными выражениями.
+# Поэтому служебные метки — ошибка без исключений, а неоднозначные оценочные
+# пояснения — ошибка до явного ручного разрешения --allow-editorial-warnings.
+def normalize_editorial(value):
+    return re.sub(r"\s+", " ", value.casefold().replace("ё", "е")).strip()
+
+
+EDITORIAL_INTERNAL = [
+    (r"\b(?:с|со)\s+(?:его|ее|их)\s+слов\b", "служебный источник «с его/ее/их слов»"),
+    (r"\b(?:со\s+слов|по\s+словам)\s+(?:клиент\w*|заказчик\w*|менеджер\w*|коллег\w*|сотрудник\w*|руководител\w*)",
+     "служебная атрибуция «со слов/по словам»"),
+    (r"\b(?:согласовать|уточнить|перепроверить|проверить)\s+(?:с\s+клиентом|у\s+клиента|с\s+менеджером|цифр\w*|данн\w*)",
+     "внутреннее поручение вместо клиентского текста"),
+    (r"\b(?:todo|tbd|fixme|черновик|вставить\s+сюда|заполнить\s+позже|внутренн\w+\s+примечани\w*|служебн\w+\s+пометк\w*)\b",
+     "служебная метка или незаполненный черновик"),
+    (r"\b(?:как\s+я\s+понял|нам\s+сказали|по\s+моему\s+мнению)\b",
+     "внутренняя оценка автора"),
+]
+
+EDITORIAL_REVIEW = [
+    (r"\b(?:предварительн\w+\s+(?:гипотез\w*|оценк\w*|прогноз\w*|данн\w*)|это\s+лишь\s+(?:гипотез\w*|оценк\w*))",
+     "самоослабляющая оценочная оговорка"),
+    (r"\b(?:по\s+(?:нашей|нашим|моей|моим)\s+оценк\w*|по\s+приблизительн\w+\s+оценк\w*)",
+     "субъективная ссылка на оценку без методики"),
+    (r"\b(?:возможн\w*\s+пересечени\w*|могут\s+быть\s+неточност\w*|возможн\w*\s+отклонени\w*)",
+     "ненужная оговорка о неточности"),
+    (r"\b(?:нужно|необходимо|следует)\s+(?:еще\s+|дополнительно\s+)?(?:подтвердить|уточнить)\s+(?:расчет\w*|прогноз\w*|цифр\w*|данн\w*|оценк\w*)",
+     "служебная просьба подтвердить расчет"),
+    (r"\b(?:не\s+является\s+гаранти\w*|не\s+можем\s+гарантирова\w*|не\s+гарантиру\w*)",
+     "оговорка об отсутствии гарантии; проверить ее необходимость"),
+    (r"\b(?:важно\s+понимать|следует\s+отметить|стоит\s+отметить|на\s+наш\s+взгляд)\b",
+     "лишняя подводка вместо конкретного факта"),
+    (r"\b(?:не\s+все\s+компани\w+\s+подход\w*|не\s+учтен\w*\s+(?:все\s+)?(?:расход\w*|затрат\w*))",
+     "дополнительная оговорка; проверить ее существенность"),
+]
+
 raw = soup.get_text(" ", strip=True)
-check("с его слов" not in raw.casefold()
-      and "со слов клиента" not in raw.casefold()
-      and "по словам клиента" not in raw.casefold(),
-      "В клиентском тексте осталась служебная пометка о происхождении кейса")
+editorial_warnings = []
+if args.ready:
+    for page_no, slide in enumerate(slides, 1):
+        client_copy = normalize_editorial(slide.get_text(" ", strip=True))
+        for pattern, reason in EDITORIAL_INTERNAL:
+            if re.search(pattern, client_copy):
+                check(False, f"Слайд {page_no}: {reason}. Уберите служебный текст.")
+        for pattern, reason in EDITORIAL_REVIEW:
+            match = re.search(pattern, client_copy)
+            if match:
+                context = client_copy[max(0, match.start()-30):min(len(client_copy), match.end()+45)]
+                editorial_warnings.append(
+                    f"Слайд {page_no}: {reason}; фрагмент «{context}»"
+                )
+    if editorial_warnings and not args.allow_editorial_warnings:
+        for issue in editorial_warnings:
+            check(False, "Редакторское согласование: " + issue)
+
 placeholders = re.findall(r"\{\{[^}]+\}\}", html)
 if args.template:
     check(bool(placeholders), "Шаблон должен содержать поля заполнения")
@@ -313,6 +366,10 @@ if args.template and args.reference is None:
         style_fingerprint = ((style_fingerprint ^ ord(character)) * 0x01000193) & 0xffffffff
     check(style_fingerprint == 911995806,
           "Изменены утвержденные CSS-стили эталона v3")
+
+if editorial_warnings and args.allow_editorial_warnings:
+    for issue in editorial_warnings:
+        print("НА РУЧНОМ СОГЛАСОВАНИИ:", issue)
 
 for issue in errors:
     print("ОШИБКА:", issue)
