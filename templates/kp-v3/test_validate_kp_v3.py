@@ -201,5 +201,27 @@ class ValidatorTests(unittest.TestCase):
         self.assert_ok(changed, "ready")
 
 
+    def test_generic_source_attribution_is_rejected(self):
+        source = "Отберем компании по Тест и найдем профильных сотрудников."
+        changed = self.ready.replace(source, source + " (по словам руководства)", 1)
+        self.assert_error(changed, "служебная атрибуция", "ready")
+
+    def test_client_information_requires_review(self):
+        source = "Отберем компании по Тест и найдем профильных сотрудников."
+        changed = self.ready.replace(source, source + " По данным клиента в базе около 500 адресов.", 1)
+        self.assert_error(changed, "Редакторское согласование", "ready")
+
+    def test_extra_sentence_inside_existing_stage_card(self):
+        source = "Согласуем целевые сегменты и критерии лида. Настроим почтовые ящики и начнем прогрев."
+        self.assertIn(source, self.ready)
+        changed = self.ready.replace(source, source + " Также расскажем обо всех дополнительных возможностях.", 1)
+        self.assert_error(changed, "чрезмерно длинный текст", "ready")
+
+    def test_vague_forecast_disclaimer_requires_review(self):
+        source = "Отберем компании по Тест и найдем профильных сотрудников."
+        changed = self.ready.replace(source, source + " Реальная конверсия может отличаться.", 1)
+        self.assert_error(changed, "Редакторское согласование", "ready")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
