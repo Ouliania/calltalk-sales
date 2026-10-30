@@ -253,6 +253,42 @@ else:
         ref_styles = [x.get_text() for x in ref_soup.select("head style")]
         check(styles == ref_styles, "Изменены глобальные CSS-стили эталона")
 
+        # Наиболее чувствительные статические подписи должны совпадать
+        # посимвольно по смыслу, даже если HTML-структуру не меняли.
+        # Клиентские поля и свободный текст в параграфах остаются редактируемыми.
+        fixed_labels = {
+            2: ["table.data-table thead th:nth-child(-n+3)"],
+            4: [".slide-body .card > div:first-child > div:first-child > span:last-child"],
+            6: [
+                ".benefit-cards .revenue-label",
+                ".benefit-cards .profit-label",
+                ".benefit-cards .payback span",
+                ".benefit-cards .chosen-pill",
+                ".benefit-cards .scenario-note",
+                ".detail-head strong", ".detail-head span",
+                ".benefit-table thead th",
+                ".benefit-table tbody td:first-child",
+            ],
+            7: [
+                ".benefit-cards .revenue-label",
+                ".benefit-cards .profit-label",
+                ".benefit-cards .payback span",
+                ".benefit-cards .chosen-pill",
+                ".benefit-cards .scenario-note",
+                ".detail-head strong", ".detail-head span",
+                ".benefit-table thead th",
+                ".benefit-table tbody td:first-child",
+            ],
+            8: [".slide-body > div[style*='grid-template-columns'] > .card > div:last-child"],
+            9: [".slide-body .card h4"],
+        }
+        for page_no, selectors in fixed_labels.items():
+            for selector in selectors:
+                expected_labels = [n.get_text(" ", strip=True) for n in ref_slides[page_no-1].select(selector)]
+                actual_labels = [n.get_text(" ", strip=True) for n in slides[page_no-1].select(selector)]
+                check(bool(expected_labels) and expected_labels == actual_labels,
+                      f"Слайд {page_no}: изменена или дополнена фиксированная подпись ({selector})")
+
         if args.template:
             required_fields = set(re.findall(r"\{\{[^}]+\}\}", ref_html))
             current_fields = set(re.findall(r"\{\{[^}]+\}\}", html))
