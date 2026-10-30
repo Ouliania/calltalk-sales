@@ -294,6 +294,26 @@ if args.ready and len(slides) == 9:
                       f"Слайд {page_num}, {j*10} ящиков: окупаемость с {expected_payback}-го договора, а не с {actual_payback}-го")
 
 
+
+# Отдельная блокировка изменений САМОГО эталона (в --template
+# обычное сравнение с соседним файлом иначе сравнит файл с самим собой).
+if args.template and args.reference is None:
+    expected_fields = set(["{{BUDGET_2M_10}}","{{BUDGET_2M_20}}","{{BUDGET_2M_30}}","{{BUDGET_4M_10}}","{{BUDGET_4M_20}}","{{BUDGET_4M_30}}","{{CONTACTS_2M_10}}","{{CONTACTS_2M_20}}","{{CONTACTS_2M_30}}","{{CONTACTS_4M_10}}","{{CONTACTS_4M_20}}","{{CONTACTS_4M_30}}","{{DEALS_2M_10}}","{{DEALS_2M_20}}","{{DEALS_2M_30}}","{{DEALS_4M_10}}","{{DEALS_4M_20}}","{{DEALS_4M_30}}","{{ECONOMY_ASSUMPTIONS}}","{{FORMULA_NOTE_2M}}","{{FORMULA_NOTE_4M}}","{{LEADS_2M_10}}","{{LEADS_2M_20}}","{{LEADS_2M_30}}","{{LEADS_4M_10}}","{{LEADS_4M_20}}","{{LEADS_4M_30}}","{{LEADS_CALC_2M_10}}","{{LEADS_CALC_2M_20}}","{{LEADS_CALC_2M_30}}","{{LEADS_CALC_4M_10}}","{{LEADS_CALC_4M_20}}","{{LEADS_CALC_4M_30}}","{{M2_10}}","{{M2_20}}","{{M2_30}}","{{M4_10}}","{{M4_20}}","{{M4_30}}","{{PAYBACK_2M_10}}","{{PAYBACK_2M_20}}","{{PAYBACK_2M_30}}","{{PAYBACK_4M_10}}","{{PAYBACK_4M_20}}","{{PAYBACK_4M_30}}","{{PROFIT_2M_10}}","{{PROFIT_2M_20}}","{{PROFIT_2M_30}}","{{PROFIT_4M_10}}","{{PROFIT_4M_20}}","{{PROFIT_4M_30}}","{{REV_2M_10}}","{{REV_2M_20}}","{{REV_2M_30}}","{{REV_4M_10}}","{{REV_4M_20}}","{{REV_4M_30}}","{{SLIDE6_TITLE}}","{{SLIDE7_TITLE}}","{{ВСЕГО}}","{{ЗАДАЧА_1}}","{{ЗАДАЧА_2}}","{{ЗАДАЧА_3}}","{{ЗАДАЧА_4}}","{{ЗАДАЧА_5}}","{{КЕЙС_ЗАДАЧА_И_АУДИТОРИЯ}}","{{КЕЙС_КОНТАКТЫ}}","{{КЕЙС_ЛИДЫ}}","{{КЕЙС_НАЗВАНИЕ}}","{{КЕЙС_ОТРАСЛЬ}}","{{КЕЙС_ПИСЬМА}}","{{КЕЙС_ПРЕДЛОЖЕНИЕ}}","{{КЕЙС_СДЕЛКИ}}","{{КЕЙС_СРОК}}","{{КОМПАНИЯ}}","{{КРИТЕРИИ_ОТБОРА}}","{{ОКВЭД_1}}","{{ОКВЭД_2}}","{{ОКВЭД_3}}","{{ОКВЭД_4}}","{{ОКВЭД_5}}","{{ПРОДУКТ}}","{{РОЛИ_АДРЕСАТОВ}}","{{СЕГМЕНТ_1}}","{{СЕГМЕНТ_2}}","{{СЕГМЕНТ_3}}","{{СЕГМЕНТ_4}}","{{СЕГМЕНТ_5}}","{{УСЛОВИЯ_ГАРАНТИИ}}","{{ЦА_ДЛЯ_ПИСЕМ}}","{{ЦЕЛЕВЫЕ_КОМПАНИИ}}","{{ЦЕНА_ЛИДА}}","{{ЧИСЛО_1}}","{{ЧИСЛО_2}}","{{ЧИСЛО_3}}","{{ЧИСЛО_4}}","{{ЧИСЛО_5}}"])
+    check(set(placeholders) == expected_fields,
+          "Изменено обязательное поле эталона v3 (проверка контрольного списка)")
+    expected_tags = {"div":276,"td":72,"span":39,"tr":25,"p":20,"th":18,"b":14,"a":12,"h3":12,"h2":7,"strong":6,"table":5,"thead":5,"tbody":5,"br":2,"h4":2,"h1":1,"img":1}
+    for name, expected in expected_tags.items():
+        check(len(soup.find_all(name)) == expected,
+              f"В эталон добавлены/из него удалены HTML-элементы: {name}")
+    style_source = "".join(re.findall(
+        r"<style(?:\s[^>]*)?>(.*?)</style>", html, flags=re.I | re.S
+    ))
+    style_fingerprint = 0x811c9dc5
+    for character in style_source:
+        style_fingerprint = ((style_fingerprint ^ ord(character)) * 0x01000193) & 0xffffffff
+    check(style_fingerprint == 911995806,
+          "Изменены утвержденные CSS-стили эталона v3")
+
 for issue in errors:
     print("ОШИБКА:", issue)
 if errors:
