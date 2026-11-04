@@ -1,0 +1,30 @@
+name: Проверка шаблона КП Call-Talk
+
+on:
+  pull_request:
+    paths:
+      - "templates/kp-v3/**"
+      - ".github/workflows/kp-validator.yml"
+  push:
+    branches: [main]
+    paths:
+      - "templates/kp-v3/**"
+      - ".github/workflows/kp-validator.yml"
+  workflow_dispatch:
+
+jobs:
+  validate-kp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: python -m pip install "beautifulsoup4>=4.12,<5"
+      - name: Compile Python validator
+        run: python -m py_compile templates/kp-v3/validate_kp_v3.py
+      - name: Run unit and mutation tests
+        run: python -m unittest discover -s templates/kp-v3 -p "test_*.py" -v
+      - name: Validate canonical template
+        run: python templates/kp-v3/validate_kp_v3.py --template templates/kp-v3/CALL-TALK_Эталон_КП_9_слайдов_v3.html
