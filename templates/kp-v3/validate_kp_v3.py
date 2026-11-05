@@ -82,29 +82,33 @@ if len(slides) == 9:
     check("Тариф на 2 месяца" in text(5) and "Тариф на 4 месяца" in text(5),
           "Слайд 5: названия тарифов")
     for card in tariffs:
-        rows = card.select("table.sm-table tbody tr")
-        check(len(rows) == 3, "Слайд 5: нужны варианты 10/20/30 ящиков")
+        card_t = card.get_text(" ", strip=True)
+        check("10 ящиков" in card_t, "Слайд 5: базовый запуск должен быть на 10 ящиков")
+        check("20 ящиков" not in card_t and "30 ящиков" not in card_t,
+              "Слайд 5: в первоначальном КП запрещено предлагать 20 или 30 ящиков (это спецоффер/акция для дожима)")
     for page in (6, 7):
         slide = slides[page - 1]
         table = slide.select_one("table.benefit-table")
         check(table is not None, f"Слайд {page}: нет справочной таблицы воронки")
         if table:
-            check(len(table.select("thead th")) == 4,
-                  f"Слайд {page}: нужна таблица для 10/20/30 ящиков")
-            check(len(table.select("tbody tr")) == 4,
-                  f"Слайд {page}: нужны контакты, прогноз, лиды для расчета и расходы")
+            check("10 ящиков" in text(page),
+                  f"Слайд {page}: расчет должен быть строго на 10 ящиков")
+            tbl_t = table.get_text(" ", strip=True)
+            check("20 ящиков" not in tbl_t and "30 ящиков" not in tbl_t,
+                  f"Слайд {page}: в первоначальном КП запрещено показывать 20 или 30 ящиков")
+            check(len(table.select("tbody tr")) >= 3,
+                  f"Слайд {page}: нужна помесячная воронка и итог")
         cards = slide.select(".benefit-cards > .benefit-card")
         check(len(cards) == 3, f"Слайд {page}: нужны три карточки финансового результата")
         if len(cards) == 3:
             check("benefit-main" in cards[1].get("class", []),
-                  f"Слайд {page}: рекомендуемый вариант — средняя карточка")
-            for card in cards:
-                check(card.select_one(".revenue") is not None,
-                      f"Слайд {page}: нужна потенциальная выручка")
-                check(card.select_one(".profit") is not None,
-                      f"Слайд {page}: нужна прибыль после расходов")
-                check(card.select_one(".payback") is not None,
-                      f"Слайд {page}: нужен порог окупаемости")
+                  f"Слайд {page}: ключевой результат — средняя карточка")
+            check(any(card.select_one(".revenue") for card in cards),
+                  f"Слайд {page}: нужна потенциальная выручка")
+            check(any(card.select_one(".profit") for card in cards),
+                  f"Слайд {page}: нужна прибыль после расходов")
+            check(any(card.select_one(".payback") for card in cards),
+                  f"Слайд {page}: нужен порог окупаемости")
         cards_container = slide.select_one(".benefit-cards")
         table_container = slide.select_one("table.benefit-table")
         if cards_container and table_container:
@@ -146,7 +150,10 @@ if len(slides) == 9:
         check(bool(slide.select_one(".slide-header")) and bool(slide.select_one(".slide-footer")),
               f"Слайд {i}: нет хедера или футера")
 
-raw = soup.get_text(" ", strip=True)\nif args.ready:\n    check("с его слов" not in raw.casefold() and "со слов клиента" not in raw.casefold(),\n          "В клиентском КП осталась внутренняя помета о происхождении кейса")
+raw = soup.get_text(" ", strip=True)
+if args.ready:
+    check("с его слов" not in raw.casefold() and "со слов клиента" not in raw.casefold(),
+          "В клиентском КП осталась внутренняя помета о происхождении кейса")
 placeholders = re.findall(r"\{\{[^}]+\}\}", raw)
 if args.template:
     check(bool(placeholders), "Шаблон должен содержать поля заполнения")
