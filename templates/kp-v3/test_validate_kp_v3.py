@@ -110,7 +110,7 @@ class KPValidatorTests(unittest.TestCase):
         self.assert_fails(modified, "постоянная подпись")
 
     def test_change_styles_fails(self):
-        modified = self.ready.replace("border-radius:11px", "border-radius:2px", 1)
+        modified = self.ready.replace("border-radius:11px;padding:8px 13px;", "border-radius:2px;padding:8px 13px;", 1)
         self.assert_fails(modified, "стили или атрибуты")
 
     def test_change_head_css_fails(self):
