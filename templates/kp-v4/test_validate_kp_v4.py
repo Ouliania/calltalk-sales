@@ -246,5 +246,20 @@ class ValidationTests(unittest.TestCase):
         self.assertEqual(item["expected"],"10")
         self.assertTrue(item["reviewable"])
 
+    def test_one_month_pilot_is_itemized_warn_not_block(self):
+        h,c=generate("qualification",10,self.folder/"one_month.html",one_month=True)
+        report=self.folder/"one_month_report.json"
+        cp=subprocess.run([sys.executable,str(HERE/"validate_kp_v4.py"),
+                           "--ready",str(h),"--config",str(c),"--report-json",str(report)],
+                           capture_output=True,text=True,encoding="utf-8")
+        self.assertEqual(cp.returncode,0,cp.stdout+cp.stderr)
+        data=json.loads(report.read_text(encoding="utf-8"))
+        self.assertEqual(data["verdict"],"WARN",cp.stdout)
+        reach=[x for x in data["issues"] if x["id"].startswith("CONFIG-REACH")]
+        self.assertEqual(len(reach),2,cp.stdout)
+        self.assertTrue(all(x["reviewable"] and "срок" in x["reason"] for x in reach))
+        self.assertEqual(data["block_count"],0,cp.stdout)
+
+
 if __name__=="__main__":
     unittest.main()
