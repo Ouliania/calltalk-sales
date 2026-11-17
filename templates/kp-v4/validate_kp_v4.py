@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import difflib
 import hashlib
 import math
 import re
@@ -32,6 +33,8 @@ mode.add_argument("--ready", type=Path, help="Проверить готовое 
 parser.add_argument("--reference", type=Path, help="Эталон HTML, если не лежит рядом со скриптом")
 parser.add_argument("--client", default="", help="Ожидаемое название клиента")
 parser.add_argument("--config", type=Path, help="Параметры экономики и двух вариантов (JSON)")
+parser.add_argument("--report-json", type=Path, help="Экспорт подробного отчета с кодами и причинами")
+parser.add_argument("--approvals", type=Path, help="JSON со списком явно согласованных WARN-ID")
 parser.add_argument(
     "--approve-editorial", action="store_true",
     help="Пропуск неоднозначных оговорок после ручного утверждения; запрещенные пометки не пропускает",
@@ -40,6 +43,16 @@ args = parser.parse_args()
 errors: list[str] = []
 warnings: list[str] = []
 values: dict[str, str] = {}
+diagnostics: list[dict] = []
+approval_ids: set[str] = set()
+if args.approvals:
+    try:
+        raw_approvals = json.loads(args.approvals.read_text(encoding="utf-8"))
+        approval_ids = set(raw_approvals.get("approved", []))
+        if not all(isinstance(k, str) for k in approval_ids):
+            raise ValueError("approved должен содержать только ID строк")
+    except (OSError, ValueError, AttributeError, TypeError) as exc:
+        errors.append(f"APPROVALS-001 | Некорректный файл решений: {exc}")
 
 
 def check(condition: bool, description: str) -> None:
@@ -49,6 +62,30 @@ def check(condition: bool, description: str) -> None:
 
 def norm(text: str) -> str:
     return re.sub(r"\s+", " ", text.replace("\u00a0", " ")).strip()
+
+
+
+def detail(level: str, code: str, slide: int, actual: str, expected: str,
+           reason: str, suggestion: str, *, reviewable: bool = False,
+           path: str = "") -> None:
+    """Каждая ошибка самостоятельна и не скрывает остальные."""
+    actual, expected = norm(actual), norm(expected)
+    import hashlib as _hashlib
+    key = f"{code}-S{slide:02d}-" + _hashlib.sha1(
+        f"{path}|{expected}|{actual}".encode("utf-8")).hexdigest()[:9]
+    approved = reviewable and key in approval_ids
+    severity = "OK" if approved else level
+    item = dict(id=key, level=severity, original_level=level, slide=slide,
+                location=path, actual=actual, expected=expected, reason=reason,
+                suggestion=suggestion, reviewable=reviewable, approved=approved)
+    diagnostics.append(item)
+    message = (f"{key} | Слайд {slide} | {reason}; "
+               f"Факт: {actual[:120]!r}; "
+               f"Как исправить: {suggestion}")
+    if severity == "BLOCK":
+        errors.append(message)
+    elif severity == "WARN":
+        warnings.append(message)
 
 
 def blob_sha(path: Path) -> str:
@@ -88,12 +125,17 @@ def text(node: Tag | None) -> str:
 
 def text_match(expected: str, actual: str, location: str) -> None:
     expected, actual = norm(expected), norm(actual)
+    slide_match = re.search(r"(?:Слайд |slide-)(\d+)", location, re.I)
+    page = int(slide_match.group(1)) if slide_match else 0
     if not FIELD.search(expected):
-        check(expected == actual, f"{location}: изменена постоянная подпись или добавлен текст: {actual[:100]!r}")
+        if expected != actual:
+            detail("WARN", "COPY-EDIT", page, actual, expected,
+                   "Изменена постоянная формулировка эталона",
+                   "Вернуть текст эталона либо согласовать именно эту редакцию",
+                   reviewable=True, path=location)
         return
-    pieces = []
-    fields = []
-    position = 0
+
+    pieces, fields, position = [], [], 0
     for match in FIELD.finditer(expected):
         pieces.append(re.escape(expected[position:match.start()]))
         pieces.append(r"(.+?)")
@@ -102,13 +144,18 @@ def text_match(expected: str, actual: str, location: str) -> None:
     pieces.append(re.escape(expected[position:]))
     extracted = re.fullmatch("".join(pieces), actual, flags=re.S)
     if not extracted:
-        check(False, f"{location}: нарушен постоянный текст вокруг заполняемого поля: {actual[:120]!r}")
+        detail("WARN", "COPY-STRUCTURE", page, actual, expected,
+               "Формулировка вокруг заполняемого поля изменена",
+               "Проверить фразу вручную; оставить смысл, согласовать текст или вернуть эталон",
+               reviewable=True, path=location)
+        # Не угадываем значения полей, если пользователь изменил целое предложение.
         return
     for name, value in zip(fields, extracted.groups()):
         value = norm(value)
-        check(bool(value), f"{location}: пустое поле {name}")
+        check(bool(value), f"FIELD-EMPTY | Слайд {page}, {location}: пустое поле {name}")
         if name in values:
-            check(values[name] == value, f"{location}: неодинаковое заполнение поля {name}")
+            check(values[name] == value,
+                  f"FIELD-CONFLICT | Слайд {page}, поле {name}: было {values[name]!r}, получено {value!r}")
         else:
             values[name] = value
 
@@ -173,16 +220,31 @@ REVIEW_PHRASES = [
 
 
 def editorial_checks(slides: list[Tag]) -> None:
+    forbidden_sources = re.compile(r"\b(?:key2sales|k2sales)\b", flags=re.I)
+    clumsy_phrase = re.compile(r"\bв\s+целевых\s+группах\s+компаний\b", flags=re.I)
     for slide_idx, slide in enumerate(slides, 1):
-        source = norm(slide.get_text(" ", strip=True)).casefold().replace("ё", "е")
-        check("₽" not in source, f"Слайд {slide_idx}: используйте 'руб.', а не графический знак рубля")
+        source = norm(slide.get_text(" ", strip=True))
+        lowered = source.casefold().replace("ё", "е")
+        for match in re.finditer(r"₽", source):
+            detail("BLOCK", "COPY-CURRENCY", slide_idx, match.group(0), "руб.",
+                   "Графический знак валюты вместо текста", "Использовать 'руб.'")
         for pattern, reason in INTERNAL_PHRASES:
-            if re.search(pattern, source, flags=re.I):
-                check(False, f"Слайд {slide_idx}: {reason}")
+            for match in re.finditer(pattern, lowered, flags=re.I):
+                detail("BLOCK", "COPY-FORBIDDEN", slide_idx, source[match.start():match.end()], "",
+                       reason, "Удалить служебную терминологию или недопустимое обещание")
         for pattern, reason in REVIEW_PHRASES:
-            match = re.search(pattern, source, flags=re.I)
-            if match:
-                warnings.append(f"Слайд {slide_idx}: {reason}: {source[max(0,match.start()-15):match.end()+50]!r}")
+            for match in re.finditer(pattern, lowered, flags=re.I):
+                detail("WARN", "COPY-TONE", slide_idx, source[match.start():match.end()], "",
+                       reason, "Проверить необходимость оговорки или убрать",
+                       reviewable=True)
+        for match in forbidden_sources.finditer(source):
+            detail("BLOCK", "COPY-OUTSIDE-SOURCE", slide_idx, source[match.start():match.end()], "",
+                   "В клиентском тексте упомянут посторонний сервис",
+                   "Убрать название сервиса. Метод отбора объяснить без источника или оставить его во внутренней записке")
+        for match in clumsy_phrase.finditer(source):
+            detail("WARN", "COPY-AUDIENCE", slide_idx, source[match.start():match.end()], "в крупных компаниях",
+                   "Неестественная формулировка целевой аудитории",
+                   "Заменить на 'в крупных компаниях'", reviewable=True)
 
 
 def market_checks(slide: Tag) -> None:
@@ -422,22 +484,46 @@ try:
 except Exception as exc:
     errors.append(f"Необработанная ошибка проверки ({type(exc).__name__}): {exc}")
 def outcome() -> int:
-    for message in errors:
-        print("BLOCK | " + message)
-    for message in warnings:
-        print("WARN | " + message)
-    if errors:
-        print(f"BLOCK | Отправка запрещена: {len(errors)} ошибок, {len(warnings)} предупреждений.")
-        return 1
-    print("OK | STRUCT-001 | 9 слайдов, исходные CSS и HTML-структура подтверждены.")
-    print("OK | COPY-001 | Нет незаполненных полей, запрещенной терминологии и внутренних пометок.")
-    if args.template:
-        print("OK | TEMPLATE-001 | SHA Git blob V4 совпадает с утвержденным эталоном.")
-    else:
-        print("OK | MATH-001 | Финансовая модель и диапазоны проверены по конфигурации.")
-        print("OK | MARKET-001 | Пять сегментов и сумма базы проверены.")
-    print(f"ИТОГ: {'WARN' if warnings else 'OK'}; предупреждений {len(warnings)}.")
-    print("Источники рыночных чисел, кейсы и визуальные переполнения сверяются отдельно.")
-    return 0
+    # Общий список проверок не прерывается первой ошибкой.
+    seen = set()
+    for item in diagnostics:
+        print(f"{item['level']} | {item['id']} | Слайд {item['slide']}"
+              + (" | СОГЛАСОВАНО" if item["approved"] else ""))
+        print("  Найдено: " + repr(item["actual"][:240]))
+        if item["expected"]:
+            print("  В эталоне: " + repr(item["expected"][:240]))
+        print("  Причина: " + item["reason"])
+        print("  Действие: " + item["suggestion"])
+        if item["level"] == "WARN":
+            print("  Для согласования: внесите ID в approved[] файла --approvals.")
+    for entry in errors:
+        if not any(entry.startswith(item["id"] + " |") for item in diagnostics):
+            key=("BLOCK", entry)
+            if key not in seen:
+                print("BLOCK | " + entry)
+                seen.add(key)
+    for entry in warnings:
+        if not any(entry.startswith(item["id"] + " |") for item in diagnostics):
+            key=("WARN", entry)
+            if key not in seen:
+                print("WARN | " + entry)
+                seen.add(key)
+    verdict = "BLOCK" if errors else "WARN" if warnings else "OK"
+    if args.report_json:
+        args.report_json.parent.mkdir(parents=True, exist_ok=True)
+        args.report_json.write_text(json.dumps({
+            "verdict":verdict, "block_count":len(errors), "warn_count":len(warnings),
+            "approved_count":sum(x["approved"] for x in diagnostics),
+            "issues": diagnostics,
+            "other_blocks":[x for x in errors if not any(x.startswith(i["id"] + " |") for i in diagnostics)],
+            "other_warns":[x for x in warnings if not any(x.startswith(i["id"] + " |") for i in diagnostics)]
+        }, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"ИТОГ: {verdict} | BLOCK {len(errors)}, WARN {len(warnings)}, "
+          f"согласованных замечаний {sum(x['approved'] for x in diagnostics)}")
+    if not errors:
+        print("OK | STRUCT-001 | Не обнаружено блокирующего нарушения структуры или расчетов.")
+    print("Отчет проверяет только известные правила; рыночные оценки, источники и рендер необходимо сверить отдельно.")
+    return 1 if errors else 0
+
 
 sys.exit(outcome())
