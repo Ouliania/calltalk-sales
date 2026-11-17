@@ -246,7 +246,7 @@ class ValidationTests(unittest.TestCase):
         self.assertEqual(item["expected"],"10")
         self.assertTrue(item["reviewable"])
 
-    def test_one_month_pilot_is_itemized_warn_not_block(self):
+    def test_one_month_standard_600_contacts_ok(self):
         h,c=generate("qualification",10,self.folder/"one_month.html",one_month=True)
         report=self.folder/"one_month_report.json"
         cp=subprocess.run([sys.executable,str(HERE/"validate_kp_v4.py"),
@@ -254,11 +254,23 @@ class ValidationTests(unittest.TestCase):
                            capture_output=True,text=True,encoding="utf-8")
         self.assertEqual(cp.returncode,0,cp.stdout+cp.stderr)
         data=json.loads(report.read_text(encoding="utf-8"))
-        self.assertEqual(data["verdict"],"WARN",cp.stdout)
+        self.assertEqual(data["verdict"],"OK",cp.stdout)
         reach=[x for x in data["issues"] if x["id"].startswith("CONFIG-REACH")]
-        self.assertEqual(len(reach),2,cp.stdout)
-        self.assertTrue(all(x["reviewable"] and "охват" in x["reason"] and "1 мес." in x["reason"] for x in reach))
+        self.assertEqual(len(reach),0,cp.stdout)
         self.assertEqual(data["block_count"],0,cp.stdout)
+
+    def test_one_month_nonstandard_total_warn(self):
+        h,c=generate("qualification",10,self.folder/"one_month.html",one_month=True)
+        config=json.loads(c.read_text(encoding="utf-8"))
+        # Different but arithmetically consistent coverage should yield WARN.
+        for v in config["variants"]:
+            v["periods"][1]["contacts"] = 400
+        c.write_text(json.dumps(config,ensure_ascii=False),encoding="utf-8")
+        # Existing HTML retains 600 total; this is also a math BLOCK (as intended).
+        cp=run(h,c)
+        self.assertNotEqual(cp.returncode,0,cp.stdout)
+        self.assertIn("CONFIG-REACH",cp.stdout)
+        self.assertIn("MATH",cp.stdout)
 
 
 if __name__=="__main__":
