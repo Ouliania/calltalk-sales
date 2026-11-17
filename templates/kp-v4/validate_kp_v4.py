@@ -35,10 +35,6 @@ parser.add_argument("--client", default="", help="Ожидаемое назва�
 parser.add_argument("--config", type=Path, help="Параметры экономики и двух вариантов (JSON)")
 parser.add_argument("--report-json", type=Path, help="Экспорт подробного отчета с кодами и причинами")
 parser.add_argument("--approvals", type=Path, help="JSON со списком явно согласованных WARN-ID")
-parser.add_argument(
-    "--approve-editorial", action="store_true",
-    help="Пропуск неоднозначных оговорок после ручного утверждения; запрещенные пометки не пропускает",
-)
 args = parser.parse_args()
 errors: list[str] = []
 warnings: list[str] = []
@@ -336,21 +332,21 @@ def financial_checks(slides: list[Tag]) -> None:
     check_equal("ЧИСЛО_ЯЩИКОВ", boxes, "BOXES")
     check_equal("ЧИСЛО_КАСАНИЙ", touches, "TOUCHES")
     if boxes != 10:
-        warnings.append(f"CONFIG-BOXES | Использовано {boxes} почтовых ящиков вместо стандартных 10; сверить согласование и охват")
+        detail("WARN", "CONFIG-BOXES", 5, str(boxes), "10", "Нестандартное количество почтовых ящиков", "Проверить согласование и пересчитать охват во всех слайдах", reviewable=True)
     if touches != 3:
-        warnings.append(f"CONFIG-TOUCHES | {touches} касаний вместо стандартных 3")
+        detail("WARN", "CONFIG-TOUCHES", 5, str(touches), "3", "Изменено число касаний", "Проверить согласование и пересчитать количество писем", reviewable=True)
     if conversion != .15:
-        warnings.append(f"CONFIG-CONVERSION | Конверсия {conversion:.1%} вместо стандартного сценария 15%; проверьте источник")
+        detail("WARN", "CONFIG-CONVERSION", 6, f"{conversion:.1%}", "15%", "Конверсия отличается от сценарной по умолчанию", "Проверить исходные данные и согласование расчетной конверсии", reviewable=True)
     if margin != .15:
-        warnings.append(f"CONFIG-MARGIN | Маржинальность {margin:.1%} вместо стандартного сценария 15%; проверьте источник")
+        detail("WARN", "CONFIG-MARGIN", 6, f"{margin:.1%}", "15%", "Маржинальность отличается от сценарной по умолчанию", "Проверить источник маржинальности и пересчет прибыли", reviewable=True)
     if mode == "terms" and [int(v.get("months", 0)) for v in variants] != [4, 2]:
-        warnings.append("CONFIG-TERM | Сроки отличаются от стандартных 4 и 2 месяцев")
+        detail("WARN", "CONFIG-TERM", 5, str([v.get("months") for v in variants]), "[4, 2]", "Изменены стандартные сроки двух тарифов", "Проверить согласованные сроки и фикс за каждый вариант", reviewable=True)
     if mode == "qualification" and variants[0].get("months") != variants[1].get("months"):
-        warnings.append("CONFIG-MODE | В сравнении квалификации указаны разные сроки")
+        detail("WARN", "CONFIG-MODE", 5, str([v.get("months") for v in variants]), "одинаковый срок", "Для форматов квалификации указаны разные сроки", "Проверить намеренность сравнения и критерии результата", reviewable=True)
     if mode == "terms":
         for i, default in enumerate((39000, 56000)):
             if int(variants[i].get("monthly_fixed_rub", 0)) != default:
-                warnings.append(f"CONFIG-PRICE | Вариант {i+1}: фикс отличается от стандартного {default} руб./мес")
+                detail("WARN", "CONFIG-PRICE", 5, str(variants[i].get("monthly_fixed_rub")), str(default), f"Вариант {i+1}: нестандартный фикс", "Сверить действующие согласованные коммерческие условия", reviewable=True, path=f"variant-{i+1}")
 
     try:
         displayed = values["ЭКОНОМИКА_ИСХОДНЫЕ_ДАННЫЕ"]
@@ -441,7 +437,7 @@ def financial_checks(slides: list[Tag]) -> None:
             standard_first = 600
             standard_follow = 1500 * (months - 1)
             if counts != [standard_first, standard_follow]:
-                warnings.append(f"CONFIG-REACH | Вариант {i}: охват {counts}, стандарт для {months} мес. [600, {standard_follow}]")
+                detail("WARN", "CONFIG-REACH", slide_no, str(counts), str([standard_first, standard_follow]), f"Вариант {i}: охват отличается от стандартной модели для {months} мес.", "Проверить фактический план контактов и срок; для мини-пилота согласовать отдельную воронку", reviewable=True, path=f"variant-{i}")
     try:
         expected = cfg.get("client", "").strip()
         check(expected and values.get("КОМПАНИЯ", "").casefold() == expected.casefold(),
