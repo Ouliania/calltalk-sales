@@ -17,8 +17,7 @@ from pathlib import Path
 from bs4 import BeautifulSoup, Comment, NavigableString, Tag
 
 REFERENCE_NAME = "CALL-TALK_Эталон_КП_9_слайдов_v4.html"
-# SHA Git blob утвержденного HTML из main на 05.11.2026. Изменять только
-# вместе с осознанным обновлением самого шаблона и тестов в отдельном PR.
+# SHA Git blob V4. При изменении эталона обновлять SHA и тесты вместе.
 REFERENCE_BLOB_SHA = "7606cf061a26a66c4821b08d8ead9c9785e39c3f"
 FIELD = re.compile(r"\{\{([^{}]+)\}\}")
 NUMBER = r"[+-]?\d[\d \u00a0\u202f]*(?:[.,]\d+)?"
@@ -281,6 +280,17 @@ def financial_checks(slides: list[Tag]) -> None:
             if int(variants[i].get("monthly_fixed_rub", 0)) != default:
                 warnings.append(f"CONFIG-PRICE | Вариант {i+1}: фикс отличается от стандартного {default} руб./мес")
 
+    try:
+        displayed = values["ЭКОНОМИКА_ИСХОДНЫЕ_ДАННЫЕ"]
+        percents = [float(x.replace(",", ".")) / 100 for x in re.findall(r"(\d+(?:[.,]\d+)?)\s*%", displayed)]
+        shown_check = parse_money(displayed)[0]
+        check(len(percents) >= 2 and abs(percents[0] - conversion) <= .00001 and abs(percents[1] - margin) <= .00001,
+              "MATH-ASSUMPTIONS | Конверсия и маржа в подписи не совпадают с JSON")
+        check(abs(shown_check - avg_check) <= 1,
+              "MATH-ASSUMPTIONS | Чек в подписи не совпадает с JSON")
+    except (KeyError, ValueError) as exc:
+        check(False, f"MATH-ASSUMPTIONS | Не удалось разобрать исходные параметры: {exc}")
+
     # Оба периода и суммы сопоставляются с одной конфигурацией; карточка 1 соответствует слайду 7.
     for i, (variant, slide_no) in enumerate(zip(variants, (7, 6)), 1):
         loc = f"SLIDE-{slide_no}"
@@ -381,7 +391,7 @@ def validate() -> None:
           "Эталон HTML изменился без обновления валидатора. Нужна согласованная версия шаблона.")
     if args.template:
         check(blob_sha(source_path) == REFERENCE_BLOB_SHA,
-              "Шаблон не совпадает с утвержденным эталоном v3 от 05.11.2026")
+              "Шаблон не совпадает с эталоном V4")
         return
     html = source_path.read_text(encoding="utf-8")
     check(not FIELD.search(html), "В готовом КП остались незаполненные поля {{...}}")
