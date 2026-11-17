@@ -13,7 +13,7 @@ MASTER = ROOT / "CALL-TALK_Эталон_КП_9_слайдов_v4.html"
 def rub(x: float) -> str:
     return f"{round(x):,}".replace(",", " ")
 
-def generate(mode: str = "terms", boxes: int = 10, output: Path | None = None) -> tuple[Path, Path]:
+def generate(mode: str = "terms", boxes: int = 10, output: Path | None = None, one_month: bool = False) -> tuple[Path, Path]:
     if mode not in ("terms", "qualification"):
         raise ValueError("mode must be terms or qualification")
     if boxes < 1:
@@ -21,15 +21,16 @@ def generate(mode: str = "terms", boxes: int = 10, output: Path | None = None) -
     touches = 3
     # Tests use explicit 1%-2% response scenarios, not a promise about any real audience.
     factor = boxes / 10
-    months = (4, 2) if mode == "terms" else (2, 2)
+    months = (4, 2) if mode == "terms" else ((1, 1) if one_month else (2, 2))
     monthly = (39000, 56000) if mode == "terms" else (56000, 56000)
     price = (4800, 4800) if mode == "terms" else (4800, 15000)
     variants = []
     for idx in range(2):
-        counts = [round(600 * factor), round(1500 * (months[idx]-1) * factor)]
-        periods = [{"contacts": n, "rate_low": .01, "rate_high": .02} for n in counts]
-        lower = [round(n*.01) for n in counts]
-        upper = [round(n*.02) for n in counts]
+        counts = [round(100 * factor), round(500 * factor)] if one_month and mode == "qualification" else [round(600 * factor), round(1500 * (months[idx]-1) * factor)]
+        rates = [(0, .01), (.006, .008)] if one_month and idx == 0 else ([(0, 0), (.002, .006)] if one_month else [(.01, .02), (.01, .02)])
+        periods = [{"contacts": n, "rate_low": r[0], "rate_high": r[1]} for n,r in zip(counts,rates)]
+        lower = [round(n*r[0]) for n,r in zip(counts,rates)]
+        upper = [round(n*r[1]) for n,r in zip(counts,rates)]
         min_leads, max_leads = sum(lower), sum(upper)
         leads = round((min_leads + max_leads)/2)
         variants.append(dict(
@@ -65,7 +66,7 @@ def generate(mode: str = "terms", boxes: int = 10, output: Path | None = None) -
     for i,v in enumerate(variants,1):
         prefix=f"ВАРИАНТ_{i}_"
         contacts=[x["contacts"] for x in v["periods"]]
-        lo=[round(n*.01) for n in contacts];hi=[round(n*.02) for n in contacts]
+        lo=[round(n*p["rate_low"]) for n,p in zip(contacts,v["periods"])];hi=[round(n*p["rate_high"]) for n,p in zip(contacts,v["periods"])]
         leads=sum(lo)+sum(hi);leads=round(leads/2)
         months_=v["months"]
         mfix=v["monthly_fixed_rub"];leadprice=v["lead_price_rub"]
@@ -93,8 +94,8 @@ def generate(mode: str = "terms", boxes: int = 10, output: Path | None = None) -
             prefix+"ОКУПАЕМОСТЬ":f"С {payback}-го договора",
             prefix+"ДОГОВОРЫ":f"≈ {round(deals)} договоров",
             prefix+"БЮДЖЕТ":rub(budget)+" руб.",
-            prefix+"ПЕРИОД_1":"Месяц 1",
-            prefix+"ПЕРИОД_2":"Месяц 2" if months_==2 else f"Месяцы 2–{months_}",
+            prefix+"ПЕРИОД_1":"Недели 1–2" if one_month else "Месяц 1",
+            prefix+"ПЕРИОД_2":"Недели 3–4" if one_month else ("Месяц 2" if months_==2 else f"Месяцы 2–{months_}"),
         })
         for n,t in enumerate((1,2)):
             data.update({prefix+f"КОНТАКТЫ_{t}":rub(contacts[n]),
@@ -117,6 +118,7 @@ if __name__=="__main__":
     p.add_argument("--mode",choices=("terms","qualification"),default="terms")
     p.add_argument("--boxes",type=int,default=10)
     p.add_argument("--output",type=Path,default=ROOT/"_test_kp_v4.html")
+    p.add_argument("--one-month",action="store_true",help="Synthetic one-month qualification example")
     a=p.parse_args()
-    html,config=generate(a.mode,a.boxes,a.output)
+    html,config=generate(a.mode,a.boxes,a.output,one_month=a.one_month)
     print(html,config,sep="\n")
