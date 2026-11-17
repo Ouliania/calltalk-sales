@@ -275,7 +275,11 @@ def market_checks(slide: Tag) -> None:
 def parse_forecast(text_value: str) -> tuple[int, int]:
     match = re.search(r"(\d+)\s*[–—-]\s*(\d+)", text_value)
     if not match:
-        raise ValueError("нет диапазона прогноза лидов")
+        singleton = re.fullmatch(r"\s*(\d+)\s*", text_value)
+        if singleton:
+            value = int(singleton.group(1))
+            return value, value
+        raise ValueError(f"нет корректного числа или диапазона прогноза: {text_value!r}")
     return int(match.group(1)), int(match.group(2))
 
 
