@@ -118,6 +118,61 @@ class ValidationTests(unittest.TestCase):
         self.assertNotEqual(x.returncode,0,x.stdout)
         self.assertIn("MATH-ASSUMPTIONS",x.stdout)
 
+    def test_multiple_independent_issues_have_exact_text_and_reasons(self):
+        h,c=self.make()
+        source=h.read_text()
+        source=source.replace("согласованным признакам бизнеса", "Key2Sales", 1)
+        source=source.replace("в целевых компаниях и подготовим", "в целевых группах компаний и подготовим", 1)
+        h.write_text(source)
+        report=self.folder/"report.json"
+        args=[sys.executable,str(HERE/"validate_kp_v4.py"),"--ready",str(h),
+              "--config",str(c),"--client","Тестовая компания","--report-json",str(report)]
+        x=subprocess.run(args,capture_output=True,text=True,encoding="utf-8")
+        self.assertNotEqual(x.returncode,0,x.stdout)
+        self.assertIn("COPY-OUTSIDE-SOURCE",x.stdout)
+        self.assertIn("COPY-AUDIENCE",x.stdout)
+        issues=json.loads(report.read_text())["issues"]
+        names={issue["id"].split("-S0")[0] for issue in issues}
+        self.assertTrue(any("COPY-OUTSIDE-SOURCE" in code for code in names))
+        self.assertTrue(any("COPY-AUDIENCE" in code for code in names))
+        self.assertTrue(all(issue["reason"] and issue["suggestion"] for issue in issues))
+
+    def test_copy_warning_can_be_approved_by_id(self):
+        h,c=self.make()
+        source=h.read_text()
+        source=source.replace("Подготовим почту и настроим отправку персональных писем.",
+                              "Подготовим почтовую инфраструктуру и персональные письма.", 1)
+        h.write_text(source)
+        report=self.folder/"report.json"
+        cmd=[sys.executable,str(HERE/"validate_kp_v4.py"),"--ready",str(h),
+             "--config",str(c),"--client","Тестовая компания","--report-json",str(report)]
+        first=subprocess.run(cmd,capture_output=True,text=True,encoding="utf-8")
+        self.assertEqual(first.returncode,0,first.stdout)
+        self.assertIn("ИТОГ: WARN",first.stdout)
+        ids=[i["id"] for i in json.loads(report.read_text())["issues"] if i["level"] == "WARN"]
+        self.assertTrue(ids)
+        approvals=self.folder/"approvals.json"
+        approvals.write_text(json.dumps({"approved":ids}),encoding="utf-8")
+        second=subprocess.run(cmd+["--approvals",str(approvals)],capture_output=True,text=True,encoding="utf-8")
+        self.assertEqual(second.returncode,0,second.stdout)
+        self.assertIn("ИТОГ: OK",second.stdout)
+        self.assertIn("СОГЛАСОВАНО",second.stdout)
+
+    def test_hard_error_cannot_be_approved(self):
+        h,c=self.make()
+        source=h.read_text().replace("согласованным признакам бизнеса", "Key2Sales", 1)
+        h.write_text(source)
+        report=self.folder/"report.json"
+        cmd=[sys.executable,str(HERE/"validate_kp_v4.py"),"--ready",str(h),
+             "--config",str(c),"--client","Тестовая компания","--report-json",str(report)]
+        first=subprocess.run(cmd,capture_output=True,text=True,encoding="utf-8")
+        ids=[i["id"] for i in json.loads(report.read_text())["issues"]]
+        approvals=self.folder/"approvals.json"
+        approvals.write_text(json.dumps({"approved":ids}),encoding="utf-8")
+        second=subprocess.run(cmd+["--approvals",str(approvals)],capture_output=True,text=True,encoding="utf-8")
+        self.assertNotEqual(second.returncode,0,second.stdout)
+        self.assertIn("COPY-OUTSIDE-SOURCE",second.stdout)
+
     def test_missing_config_block(self):
         h,c=self.make()
         x=run(h,None)
