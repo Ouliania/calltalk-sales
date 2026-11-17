@@ -179,5 +179,72 @@ class ValidationTests(unittest.TestCase):
         self.assertNotEqual(x.returncode,0,x.stdout)
         self.assertIn("CONFIG-001",x.stdout)
 
+    def test_copy_editorial_deviation_is_detailed_warn(self):
+        h,c=self.make()
+        s=h.read_text(encoding="utf-8").replace(
+            "Выручка от заключенных договоров.",
+            "Выручка от новых контрактов.",
+            1)
+        h.write_text(s,encoding="utf-8")
+        report=self.folder/"report.json"
+        cp=subprocess.run([sys.executable,str(HERE/"validate_kp_v4.py"),"--ready",str(h),
+                           "--config",str(c),"--client","Тестовая компания",
+                           "--report-json",str(report)],capture_output=True,text=True,encoding="utf-8")
+        self.assertEqual(cp.returncode,0,cp.stdout+cp.stderr)
+        self.assertIn("WARN | COPY-EDIT",cp.stdout)
+        self.assertIn("Причина: Изменена постоянная формулировка",cp.stdout)
+        self.assertIn("Найдено: 'Выручка от новых контрактов.'",cp.stdout)
+        data=json.loads(report.read_text(encoding="utf-8"))
+        matching=[x for x in data["issues"] if x["level"]=="WARN" and x["slide"]==6]
+        self.assertTrue(matching,data)
+
+    def test_individual_approval_does_not_suppress_other_findings(self):
+        h,c=self.make(boxes=20)
+        s=h.read_text(encoding="utf-8").replace(
+            "Выручка от заключенных договоров.",
+            "Выручка от новых контрактов.",1)
+        h.write_text(s,encoding="utf-8")
+        first=self.folder/"before.json"
+        proc=subprocess.run([sys.executable,str(HERE/"validate_kp_v4.py"),"--ready",str(h),
+                             "--config",str(c),"--report-json",str(first)],
+                             capture_output=True,text=True,encoding="utf-8")
+        self.assertEqual(proc.returncode,0,proc.stdout+proc.stderr)
+        all_issues=json.loads(first.read_text(encoding="utf-8"))["issues"]
+        copy_id=next(x["id"] for x in all_issues if x["id"].startswith("COPY-EDIT"))
+        approvals=self.folder/"approvals.json"
+        approvals.write_text(json.dumps({"approved":[copy_id]},ensure_ascii=False),encoding="utf-8")
+        after=self.folder/"after.json"
+        cp=subprocess.run([sys.executable,str(HERE/"validate_kp_v4.py"),"--ready",str(h),
+                           "--config",str(c),"--approvals",str(approvals),
+                           "--report-json",str(after)],capture_output=True,text=True,encoding="utf-8")
+        data=json.loads(after.read_text(encoding="utf-8"))
+        self.assertEqual(cp.returncode,0,cp.stdout+cp.stderr)
+        self.assertEqual(data["approved_count"],1)
+        self.assertEqual(data["verdict"],"WARN")
+        self.assertTrue(any(i["id"].startswith("CONFIG-BOXES") and i["level"]=="WARN" for i in data["issues"]))
+
+    def test_external_service_is_explicit_block(self):
+        h,c=self.make()
+        s=h.read_text(encoding="utf-8").replace(
+            "согласованным признакам бизнеса", "данным Key2Sales",1)
+        h.write_text(s,encoding="utf-8")
+        out=run(h,c)
+        self.assertNotEqual(out.returncode,0,out.stdout)
+        self.assertIn("COPY-OUTSIDE-SOURCE",out.stdout)
+        self.assertIn("Key2Sales",out.stdout)
+        self.assertIn("сторонний",out.stdout.lower() if "сторонний" in out.stdout.lower() else out.stdout)
+
+    def test_nonstandard_boxes_reported_with_expected_value(self):
+        h,c=self.make(boxes=20)
+        report=self.folder/"boxes.json"
+        out=subprocess.run([sys.executable,str(HERE/"validate_kp_v4.py"),"--ready",str(h),
+                            "--config",str(c),"--report-json",str(report)],
+                            capture_output=True,text=True,encoding="utf-8")
+        self.assertEqual(out.returncode,0,out.stdout+out.stderr)
+        item=next(x for x in json.loads(report.read_text(encoding="utf-8"))["issues"] if x["id"].startswith("CONFIG-BOXES"))
+        self.assertEqual(item["actual"],"20")
+        self.assertEqual(item["expected"],"10")
+        self.assertTrue(item["reviewable"])
+
 if __name__=="__main__":
     unittest.main()
