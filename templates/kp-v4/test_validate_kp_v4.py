@@ -257,7 +257,7 @@ class ValidationTests(unittest.TestCase):
         self.assertEqual(data["verdict"],"WARN",cp.stdout)
         reach=[x for x in data["issues"] if x["id"].startswith("CONFIG-REACH")]
         self.assertEqual(len(reach),2,cp.stdout)
-        self.assertTrue(all(x["reviewable"] and "срок" in x["reason"] for x in reach))
+        self.assertTrue(all(x["reviewable"] and "охват" in x["reason"] and "1 мес." in x["reason"] for x in reach))
         self.assertEqual(data["block_count"],0,cp.stdout)
 
 
