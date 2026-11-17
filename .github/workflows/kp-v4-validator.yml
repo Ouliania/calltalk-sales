@@ -1,0 +1,28 @@
+name: Call-Talk KP V4 validator
+on:
+  pull_request:
+    paths:
+      - 'templates/kp-v4/**'
+      - '.github/workflows/kp-v4-validator.yml'
+  push:
+    branches:
+      - 'feat/kp-v4'
+    paths:
+      - 'templates/kp-v4/**'
+      - '.github/workflows/kp-v4-validator.yml'
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Dependencies
+        run: python -m pip install beautifulsoup4
+      - name: Compile
+        run: python -m py_compile templates/kp-v4/validate_kp_v4.py templates/kp-v4/generate_test_example.py templates/kp-v4/test_validate_kp_v4.py
+      - name: Check template and semantics
+        run: python templates/kp-v4/validate_kp_v4.py --template templates/kp-v4/CALL-TALK_Эталон_КП_9_слайдов_v4.html
+      - name: Test BLOCK WARN OK
+        run: python -m unittest -v templates/kp-v4/test_validate_kp_v4.py
