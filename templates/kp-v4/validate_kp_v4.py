@@ -18,7 +18,7 @@ from bs4 import BeautifulSoup, Comment, NavigableString, Tag
 
 REFERENCE_NAME = "CALL-TALK_Эталон_КП_9_слайдов_v4.html"
 # SHA Git blob V4. При изменении эталона обновлять SHA и тесты вместе.
-REFERENCE_BLOB_SHA = "7606cf061a26a66c4821b08d8ead9c9785e39c3f"
+REFERENCE_BLOB_SHA = "842318450a67a405f5ca51378cb08c2ad5121684"
 FIELD = re.compile(r"\{\{([^{}]+)\}\}")
 NUMBER = r"[+-]?\d[\d \u00a0\u202f]*(?:[.,]\d+)?"
 MONEY = re.compile(
