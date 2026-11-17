@@ -222,6 +222,7 @@ REVIEW_PHRASES = [
 
 def editorial_checks(slides: list[Tag]) -> None:
     forbidden_sources = re.compile(r"\b(?:key2sales|k2sales)\b", flags=re.I)
+    harmful_disclaimer = re.compile(r"\b(?:мы\s+не\s+уверены\s+в\s+расчетах|расчеты\s+не\s+проверены)\b", flags=re.I)
     clumsy_phrase = re.compile(r"\bв\s+целевых\s+группах\s+компаний\b", flags=re.I)
     for slide_idx, slide in enumerate(slides, 1):
         source = norm(slide.get_text(" ", strip=True))
@@ -238,6 +239,10 @@ def editorial_checks(slides: list[Tag]) -> None:
                 detail("WARN", "COPY-TONE", slide_idx, source[match.start():match.end()], "",
                        reason, "Проверить необходимость оговорки или убрать",
                        reviewable=True)
+        for match in harmful_disclaimer.finditer(source):
+            detail("BLOCK", "COPY-UNSUPPORTED", slide_idx, source[match.start():match.end()], "",
+                   "Необоснованная или служебная оговорка о недостоверности расчета",
+                   "Убрать оговорку и проверить сами исходные данные и расчет")
         for match in forbidden_sources.finditer(source):
             detail("BLOCK", "COPY-OUTSIDE-SOURCE", slide_idx, source[match.start():match.end()], "",
                    "В клиентском тексте упомянут посторонний сервис",
