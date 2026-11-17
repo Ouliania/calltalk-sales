@@ -330,7 +330,10 @@ def financial_checks(slides: list[Tag]) -> None:
             check(False, f"MATH-{location} | {name}: {exc}")
 
     check_equal("ЧИСЛО_ЯЩИКОВ", boxes, "BOXES")
-    check_equal("ЧИСЛО_КАСАНИЙ", touches, "TOUCHES")
+    # Частота касаний может отсутствовать в клиентском тексте по редакторскому решению.
+    # При этом почтовые объемы и число контактов обязательно проверяются ниже.
+    if "ЧИСЛО_КАСАНИЙ" in values:
+        check_equal("ЧИСЛО_КАСАНИЙ", touches, "TOUCHES")
     if boxes != 10:
         detail("WARN", "CONFIG-BOXES", 5, str(boxes), "10", "Нестандартное количество почтовых ящиков", "Проверить согласование и пересчитать охват во всех слайдах", reviewable=True)
     if touches != 3:
@@ -434,10 +437,18 @@ def financial_checks(slides: list[Tag]) -> None:
                     except ValueError:
                         check(False, f"MATH-{loc} | Нечисловой итог контактов или писем")
         if boxes == 10:
+            # Один месяц может быть показан по двум частям месяца (например, неделям 1-2 и 3-4).
+            # В таком случае стандарт -- 600 контактов СУММАРНО, а не [600, 0].
             standard_first = 600
             standard_follow = 1500 * (months - 1)
-            if counts != [standard_first, standard_follow]:
-                detail("WARN", "CONFIG-REACH", slide_no, str(counts), str([standard_first, standard_follow]), f"Вариант {i}: охват отличается от стандартной модели для {months} мес.", "Проверить фактический план контактов и срок; для мини-пилота согласовать отдельную воронку", reviewable=True, path=f"variant-{i}")
+            expected_contacts = 600 if months == 1 else standard_first + standard_follow
+            if months == 1:
+                nonstandard = sum(counts) != expected_contacts
+            else:
+                nonstandard = counts != [standard_first, standard_follow]
+            if nonstandard:
+                expected = f"итого {expected_contacts} контактов" if months == 1 else str([standard_first, standard_follow])
+                detail("WARN", "CONFIG-REACH", slide_no, str(counts), expected, f"Вариант {i}: охват отличается от стандартной модели для {months} мес.", "Сверить план контактов со стандартом; если срок 1 месяц, суммировать оба полумесячных периода", reviewable=True, path=f"variant-{i}")
     try:
         expected = cfg.get("client", "").strip()
         check(expected and values.get("КОМПАНИЯ", "").casefold() == expected.casefold(),
