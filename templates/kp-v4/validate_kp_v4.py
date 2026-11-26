@@ -166,12 +166,62 @@ def clean_children(tag: Tag) -> list[Tag | NavigableString]:
     ]
 
 
+def load_managers() -> dict:
+    managers_path = Path(__file__).with_name("managers.json")
+    if not managers_path.exists():
+        managers_path = Path(__file__).resolve().parent.parent.parent / "config" / "managers.json"
+    if managers_path.exists():
+        try:
+            return json.loads(managers_path.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    return {}
+
+
+def apply_manager_card(slide_tag: Tag, mgr: dict) -> None:
+    card = slide_tag.select_one('div[style*="background: var(--primary)"]')
+    if not card:
+        return
+    img = card.select_one("img")
+    if img:
+        img["alt"] = mgr.get("name", "Андрей")
+        if mgr.get("photo"):
+            img["src"] = mgr["photo"]
+            img["style"] = "width: 100%; height: 100%; object-fit: cover; display: block;"
+        else:
+            img["src"] = "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"60\" height=\"60\"></svg>"
+            img["style"] = "width: 100%; height: 100%; object-fit: cover; display: none;"
+        initials = img.find_next_sibling("div")
+        if initials:
+            initials.string = mgr.get("initials", "")
+            if not mgr.get("photo"):
+                initials["style"] = "width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.2); color: white; font-weight: 800; font-size: 20px;"
+
+    name = card.select_one('div[style*="font-size: 17px"]')
+    if name:
+        name.string = mgr["name"]
+    title = card.select_one('div[style*="font-size: 12px"]')
+    if title:
+        title.string = mgr.get("title", "Ведущий специалист B2B-лидогенерации Call-Talk")
+    note = card.select_one('div[style*="font-size: 11px"]')
+    if note:
+        note.string = mgr.get("note", "Персональное ведение кампании, контроль базы и качества каждого лида")
+    email = card.select_one('a[href^="mailto:"]')
+    if email:
+        email["href"] = "mailto:" + mgr["email"]
+        email.string = mgr["email"]
+
+
 def attributes(node: Tag, page: int) -> dict:
     attrs = {}
     for key, val in node.attrs.items():
         if key == "src" and node.name == "img" and page == 9:
             check(str(val).startswith("data:image/"), "Слайд 9: фото должно быть встроено в HTML")
             attrs[key] = "<встроенное фото>"
+        elif key == "alt" and node.name == "img" and page == 9:
+            attrs[key] = "<менеджер>"
+        elif key == "href" and node.name == "a" and page == 9 and str(val).startswith("mailto:"):
+            attrs[key] = "<email менеджера>"
         else:
             attrs[key] = tuple(val) if isinstance(val, list) else val
     return attrs
@@ -484,6 +534,30 @@ def validate() -> None:
     check(expected_style == actual_style, "Изменены CSS-стили эталона")
     if len(ready_slides) != 9:
         return
+    managers_registry = load_managers()
+    if len(ready_slides) == 9 and managers_registry:
+        ready_card = ready_slides[8].select_one('div[style*="background: var(--primary)"]')
+        if ready_card:
+            ready_email_elem = ready_card.select_one('a[href^="mailto:"]')
+            ready_email = ready_email_elem.get_text(strip=True).lower() if ready_email_elem else ""
+            matched_mgr = None
+            for mgr in managers_registry.values():
+                if mgr.get("email", "").lower() == ready_email:
+                    matched_mgr = mgr
+                    break
+            if not matched_mgr:
+                ready_name_elem = ready_card.select_one('div[style*="font-size: 17px"]')
+                ready_name = ready_name_elem.get_text(strip=True).lower() if ready_name_elem else ""
+                for mgr in managers_registry.values():
+                    if mgr.get("name", "").lower() == ready_name:
+                        matched_mgr = mgr
+                        break
+            if matched_mgr:
+                apply_manager_card(original_slides[8], matched_mgr)
+            else:
+                detail("BLOCK", "MANAGER-UNAPPROVED", 9, ready_email or "контакт не найден",
+                       "email из managers.json", "Менеджер не найден в официальном реестре Call-Talk",
+                       "Указать контакт действующего менеджера Call-Talk из managers.json")
     for idx, (left, right) in enumerate(zip(original_slides, ready_slides), 1):
         compare_nodes(left, right, idx, f"slide-{idx}")
     check(len(ready.select("script")) == len(original.select("script")),

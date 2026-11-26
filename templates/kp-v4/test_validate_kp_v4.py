@@ -259,6 +259,13 @@ class ValidationTests(unittest.TestCase):
         self.assertEqual(len(reach),0,cp.stdout)
         self.assertEqual(data["block_count"],0,cp.stdout)
 
+    def test_approved_managers_ok(self):
+        for mgr in ("leonid", "ekaterina", "ulyana"):
+            h, c = generate("terms", 10, self.folder / f"{mgr}.html", manager_id=mgr)
+            cp = run(h, c)
+            self.assertEqual(cp.returncode, 0, f"Manager {mgr} failed: " + cp.stdout + cp.stderr)
+            self.assertIn("OK", cp.stdout)
+
     def test_one_month_nonstandard_total_warn(self):
         h,c=generate("qualification",10,self.folder/"one_month.html",one_month=True)
         config=json.loads(c.read_text(encoding="utf-8"))

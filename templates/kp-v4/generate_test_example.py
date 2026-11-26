@@ -13,7 +13,7 @@ MASTER = ROOT / "CALL-TALK_Эталон_КП_9_слайдов_v4.html"
 def rub(x: float) -> str:
     return f"{round(x):,}".replace(",", " ")
 
-def generate(mode: str = "terms", boxes: int = 10, output: Path | None = None, one_month: bool = False) -> tuple[Path, Path]:
+def generate(mode: str = "terms", boxes: int = 10, output: Path | None = None, one_month: bool = False, manager_id: str = "andrey") -> tuple[Path, Path]:
     if mode not in ("terms", "qualification"):
         raise ValueError("mode must be terms or qualification")
     if boxes < 1:
@@ -106,6 +106,45 @@ def generate(mode: str = "terms", boxes: int = 10, output: Path | None = None, o
     if missing:
         raise ValueError(f"Unfilled keys: {sorted(missing)}")
     filled=re.sub(r"\{\{([^{}]+)\}\}",lambda m:data[m.group(1)],template)
+    if manager_id and manager_id != "andrey":
+        managers_file = ROOT / "managers.json"
+        if managers_file.exists():
+            mgrs = json.loads(managers_file.read_text(encoding="utf-8"))
+            if manager_id in mgrs:
+                from bs4 import BeautifulSoup
+                soup = BeautifulSoup(filled, "html.parser")
+                slide9 = soup.select(".slide")[8]
+                card = slide9.select_one('div[style*="background: var(--primary)"]')
+                if card:
+                    mgr = mgrs[manager_id]
+                    img = card.select_one("img")
+                    if img:
+                        img["alt"] = mgr.get("name", "")
+                        if mgr.get("photo"):
+                            img["src"] = mgr["photo"]
+                            img["style"] = "width: 100%; height: 100%; object-fit: cover; display: block;"
+                        else:
+                            img["src"] = "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"60\" height=\"60\"></svg>"
+                            img["style"] = "width: 100%; height: 100%; object-fit: cover; display: none;"
+                        initials = img.find_next_sibling("div")
+                        if initials:
+                            initials.string = mgr.get("initials", "")
+                            if not mgr.get("photo"):
+                                initials["style"] = "width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.2); color: white; font-weight: 800; font-size: 20px;"
+                    name = card.select_one('div[style*="font-size: 17px"]')
+                    if name:
+                        name.string = mgr["name"]
+                    title = card.select_one('div[style*="font-size: 12px"]')
+                    if title:
+                        title.string = mgr.get("title", "Ведущий специалист B2B-лидогенерации Call-Talk")
+                    note = card.select_one('div[style*="font-size: 11px"]')
+                    if note:
+                        note.string = mgr.get("note", "Персональное ведение кампании, контроль базы и качества каждого лида")
+                    email = card.select_one('a[href^="mailto:"]')
+                    if email:
+                        email["href"] = "mailto:" + mgr["email"]
+                        email.string = mgr["email"]
+                filled = str(soup)
     output=Path(output or (ROOT/"_test_kp_v4.html"))
     output.parent.mkdir(parents=True,exist_ok=True)
     output.write_text(filled,encoding="utf-8")
@@ -117,8 +156,9 @@ if __name__=="__main__":
     p=argparse.ArgumentParser()
     p.add_argument("--mode",choices=("terms","qualification"),default="terms")
     p.add_argument("--boxes",type=int,default=10)
+    p.add_argument("--manager",choices=("andrey","leonid","ulyana","ekaterina"),default="andrey")
     p.add_argument("--output",type=Path,default=ROOT/"_test_kp_v4.html")
     p.add_argument("--one-month",action="store_true",help="Synthetic one-month qualification example")
     a=p.parse_args()
-    html,config=generate(a.mode,a.boxes,a.output,one_month=a.one_month)
+    html,config=generate(a.mode,a.boxes,a.output,one_month=a.one_month,manager_id=a.manager)
     print(html,config,sep="\n")
