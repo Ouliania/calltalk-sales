@@ -6,10 +6,12 @@ on:
       - '.github/workflows/kp-v4-validator.yml'
   push:
     branches:
+      - 'main'
       - 'feat/kp-v4'
     paths:
       - 'templates/kp-v4/**'
       - '.github/workflows/kp-v4-validator.yml'
+  workflow_dispatch:
 jobs:
   validate:
     runs-on: ubuntu-latest
